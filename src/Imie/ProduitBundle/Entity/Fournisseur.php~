@@ -6,28 +6,42 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Fournisseur
+ *
+ * @ORM\Table(name="fournisseur")
+ * @ORM\Entity
  */
 class Fournisseur
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=50, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="tel", type="string", length=30, nullable=false)
      */
     private $tel;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=50, nullable=false)
      */
     private $type;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
 
 
     /**

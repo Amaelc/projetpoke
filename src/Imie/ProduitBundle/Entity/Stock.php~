@@ -6,53 +6,92 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Stock
+ *
+ * @ORM\Table(name="stock", indexes={@ORM\Index(name="stock_ibfk_5", columns={"idUtilisateur"}), @ORM\Index(name="stock_ibfk_1", columns={"idProduit"}), @ORM\Index(name="stock_ibfk_2", columns={"idCouleur"}), @ORM\Index(name="stock_ibfk_3", columns={"idTaille"}), @ORM\Index(name="stock_ibfk_4", columns={"idFournisseur"})})
+ * @ORM\Entity(repositoryClass="amael\produitBundle\Repository\StockRepository")
  */
 class Stock
 {
     /**
      * @var integer
+     *
+     * @ORM\Column(name="qteStock", type="integer", nullable=false)
      */
     private $qtestock;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="qteDefectueux", type="integer", nullable=false)
      */
     private $qtedefectueux;
 
     /**
      * @var \DateTime
+     *
+     * @ORM\Column(name="dateAchat", type="date", nullable=true)
      */
     private $dateachat;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Utilisateur
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Utilisateur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUtilisateur", referencedColumnName="id")
+     * })
      */
     private $idutilisateur;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Fournisseur
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Fournisseur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idFournisseur", referencedColumnName="id")
+     * })
      */
     private $idfournisseur;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Taille
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Taille")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idTaille", referencedColumnName="id")
+     * })
      */
     private $idtaille;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Couleur
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Couleur")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCouleur", referencedColumnName="id")
+     * })
      */
     private $idcouleur;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Produit
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Produit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idProduit", referencedColumnName="id")
+     * })
      */
     private $idproduit;
+
 
 
     /**

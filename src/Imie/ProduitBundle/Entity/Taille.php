@@ -6,18 +6,28 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Taille
+ *
+ * @ORM\Table(name="taille")
+ * @ORM\Entity
  */
 class Taille
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="taille", type="string", length=10, nullable=true)
      */
     private $taille;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
 
 
     /**

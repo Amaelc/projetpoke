@@ -6,28 +6,42 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Image
+ *
+ * @ORM\Table(name="image")
+ * @ORM\Entity
  */
 class Image
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=100, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="alt", type="string", length=500, nullable=false)
      */
     private $alt;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=500, nullable=false)
      */
     private $url;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
 
 
     /**

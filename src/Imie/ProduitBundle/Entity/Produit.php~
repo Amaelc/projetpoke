@@ -6,38 +6,62 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Produit
+ *
+ * @ORM\Table(name="produit", indexes={@ORM\Index(name="idImage", columns={"idImage"}), @ORM\Index(name="idCategorie", columns={"idCategorie"})})
+ * @ORM\Entity
  */
 class Produit
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=30, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=100, nullable=false)
      */
     private $description;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="prix", type="decimal", precision=10, scale=0, nullable=true)
      */
     private $prix;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Categorie
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Categorie")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idCategorie", referencedColumnName="id")
+     * })
      */
     private $idcategorie;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Image
+     *
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Image")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idImage", referencedColumnName="id")
+     * })
      */
     private $idimage;
+
 
 
     /**

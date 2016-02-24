@@ -6,23 +6,35 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Utilisateur
+ *
+ * @ORM\Table(name="utilisateur")
+ * @ORM\Entity
  */
 class Utilisateur
 {
     /**
      * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=50, nullable=false)
      */
     private $nom;
 
     /**
      * @var string
+     *
+     * @ORM\Column(name="pwd", type="string", length=20, nullable=false)
      */
     private $pwd;
 
     /**
      * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
 
 
     /**
