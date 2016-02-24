@@ -1,14 +1,14 @@
 <?php
 
-namespace amael\blogBundle\Repository;
+namespace Imie\ProduitBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 //Avec le use qui va avec :	
 use Doctrine\ORM\EntityManager;
-use amael\blogBundle\Entity\Produit;
-use amael\blogBundle\Entity\Stock;
-use amael\blogBundle\Entity\Image;
+use Imie\ProduitBundle\Entity\Produit;
+use Imie\ProduitBundle\Entity\Stock;
+use Imie\ProduitBundle\Entity\Image;
 /**
  * ArticleRepository
  *

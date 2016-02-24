@@ -3,12 +3,12 @@
 namespace Imie\ProduitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Produit
  *
  * @ORM\Table(name="produit", indexes={@ORM\Index(name="idImage", columns={"idImage"}), @ORM\Index(name="idCategorie", columns={"idCategorie"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Imie\ProduitBundle\Repository\ProduitRepository")
  */
 class Produit
 {
@@ -62,7 +62,10 @@ class Produit
      */
     private $idimage;
 
-
+    /**
+     * ManyToOne(targetEntity="Stock", inversedBy="idproduit")
+     */
+    private $listeStock;
 
     /**
      * Set nom

@@ -3,12 +3,14 @@
 namespace Imie\ProduitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 
+use Imie\ProduitBundle\Repository\StockRepository;
 /**
  * Stock
  *
- * @ORM\Table(name="stock", indexes={@ORM\Index(name="stock_ibfk_5", columns={"idUtilisateur"}), @ORM\Index(name="stock_ibfk_1", columns={"idProduit"}), @ORM\Index(name="stock_ibfk_2", columns={"idCouleur"}), @ORM\Index(name="stock_ibfk_3", columns={"idTaille"}), @ORM\Index(name="stock_ibfk_4", columns={"idFournisseur"})})
- * @ORM\Entity(repositoryClass="amael\produitBundle\Repository\StockRepository")
+ * @ORM\Table(name="stock", indexes={@ORM\Index(name="idUtilisateur", columns={"idUtilisateur"}), @ORM\Index(name="idProduit", columns={"idProduit"}), @ORM\Index(name="idCouleur", columns={"idCouleur"}), @ORM\Index(name="idTaille", columns={"idTaille"}), @ORM\Index(name="idFournisseur", columns={"idFournisseur"})})
+ * @ORM\Entity(repositoryClass="Imie\ProduitBundle\Repository\StockRepository")
  */
 class Stock
 {

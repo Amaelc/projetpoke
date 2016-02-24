@@ -1,14 +1,14 @@
 <?php
 
-namespace amael\blogBundle\Repository;
+namespace Imie\ProduitBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 //Avec le use qui va avec :	
 use Doctrine\ORM\EntityManager;
-use amael\blogBundle\Entity\Produit;
-use amael\blogBundle\Entity\Stock;
-use amael\blogBundle\Entity\Image;
+use Imie\ProduitBundle\Entity\Produit;
+use Imie\ProduitBundle\Entity\Stock;
+use Imie\ProduitBundle\Entity\Image;
 /**
  * ArticleRepository
  *
@@ -17,10 +17,58 @@ use amael\blogBundle\Entity\Image;
  */
 class StockRepository extends EntityRepository
 {
-    /* Créez une méthode getArticles() dans ArticleRepository qui vous permettra de sélectionner
-les articles du plus récent au plus ancien. */
-    public function  getStocks(EntityManager $em){
 
+    public function  getStocks(EntityManager $em){  //gérer les parametres pour ramener les stocks d'une ou plusieurs categories, taille(s) ou couleurs
+
+        echo "toto";   
         $queryBuilder = $em->createQueryBuilder();
+
+        $queryBuilder->select("s, c, p")
+            ->from("ImieProduitBundle:Stock", "s")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+        ;
+        //group By
+        /*
+        ->leftJoin('a.user', 'u')
+        ->where('u = :user')
+        ->setParameter('user', $users)
+          */
+        
+        $query = $queryBuilder->getQuery();
+        
+        $articles = $query->getResult();
+
+        //var_dump($articles);
+        
+        /*
+        Améliorer cette méthode afin d'intégrer le système de pagination. 
+        */
+        
+        return $articles;
     }
+    
+     /**
+     * //ramene tous les éléments de stock pour une categorie
+     * @param int $idGenre Id du genre à rechercher
+     * @return Iabsis\Bundle\VideothequeBundle\Entity\Film[] Liste des films du genre demandé
+     */
+    public function findByCategorie($idCategorie = 0)
+    {
+        /* Création de la requète avec le query builder */
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select("s, p, c")
+                     ->from("ImieProduitBundle:Stock", "s")
+                     ->leftJoin("s.categorie", "c")
+                     ->leftJoin("s.produit", "c");
+       
+        /* Si on reçoit un id de genre valide alors on recherche les Films de ce genre là uniquement */
+        if ((int)$idGenre > 0) {
+            $queryBuilder->where("c.id=:idCategorie")->setParameter("idCategorie", (int)$idCategorie);
+        }
+        /* Puis on retourne la liste des films du genre demandé */
+        return $queryBuilder->getQuery()->getResult();
+    }
+    
+    
 }
