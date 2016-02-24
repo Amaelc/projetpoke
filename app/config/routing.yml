@@ -1,0 +1,3 @@
+imie_produit:
+    resource: "@ImieProduitBundle/Resources/config/routing.yml"
+    prefix:   /produit
