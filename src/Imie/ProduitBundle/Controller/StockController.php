@@ -12,14 +12,14 @@ use Imie\ProduitBundle\Repository\ProduitRepository;
 use Imie\ProduitBundle\Repository\StockRepository;
 
 class StockController extends Controller
-{
+{  
     public function indexAction(){
         $entityManager = $this->getDoctrine()->getManager();  
         $repo = $entityManager->getRepository('ImieProduitBundle:Stock');
         
         $stocks = $repo->getStocks($entityManager);   // gérer les cas ou on veut les stocks pour une ou plusieurs cétagoires, couleurs tailles
         
-        $variables['stocks'] = $stocks;
+        $variables['stocks'] = $stocks; //
 
         // On récupère le stock 
         // $variables['total_stock'] = $entityManager->getRepository(":Stock")->countAll();
