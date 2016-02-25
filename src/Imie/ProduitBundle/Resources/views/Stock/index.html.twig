@@ -1,3 +1,6 @@
+{% extends "ImieProduitBundle::layout.html.twig" %}
+{% block title %} Accueil - {{ parent() }} {% endblock %}
+{% block produit_body %}
     <div >
         Liste des produits et des stocks ici (liste sous forme de tableau à adapter avec le modèle du wireframe de jolan)
     </div>
@@ -19,4 +22,5 @@
         {% endfor %}
         </table>
     </p>
+{% endblock %}
 
