@@ -13,3 +13,7 @@ imie_produit_modifier:
 imie_produit_supprimer:
     path:     /supprimer/{id}
     defaults: { _controller: ImieProduitBundle:Produit:supprimer }
+
+user_paginate:
+    path:     /paginate
+    defaults: { _controller: ImieProduitBundle:Stock:index }
