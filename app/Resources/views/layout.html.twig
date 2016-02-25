@@ -1,14 +1,24 @@
 {# app/Resources/views/layout.html.twig #}
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>{% block title %}projetPoke{% endblock %}</title>
+    <head>        
+         {% block title %}Produit {% endblock %}
+
+
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }} "type="text/css" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link href="{{ asset('bundles/produit/css/style.css') }}" rel="stylesheet">
         
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css') }} "type="text/css" />
-        {% endblock %}
+          {% block head %}
+         {% endblock %} 
+        {% block stylesheets %}{% endblock %}
+        
     </head>
+    
+    
     <body> 
         
         <div class="container">
