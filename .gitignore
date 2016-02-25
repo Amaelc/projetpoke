@@ -7,7 +7,6 @@
 
 /composer.phar
 
-*.lock
 *.md
 LICENSE
 
