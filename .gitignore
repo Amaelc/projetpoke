@@ -1,0 +1,16 @@
+/app/bootstrap.php.cache
+/app/cache/*
+/app/logs/*
+!app/cache/.gitkeep
+!app/logs/.gitkeep
+/app/phpunit.xml
+
+/composer.phar
+
+*.lock
+*.md
+LICENSE
+
+/nbproject/
+
+/vendor/
