@@ -10,4 +10,4 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: ThisTokenIsNotSoSecretChangeIt
-    app_webmaster: Equipe Ninja
+    app_webmaster: Equipe_Ninja 
