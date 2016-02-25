@@ -1,0 +1,26 @@
+{% extends "ImieProduitBundle::layout.html.twig" %}
+{% block title %} Accueil - {{ parent() }} {% endblock %}
+{% block produit_body %}
+    <div >
+        Liste des produits et des stocks ici (liste sous forme de tableau à adapter avec le modèle du wireframe de jolan)
+    </div>
+    
+    <p>
+        <table class="tableStocks">
+        <!--
+                                <tr>
+                                    <th>Image</th><th>Article</th><th>contenu</th><th>date</th><th>auteur</th><th>publication</th><th>Catégorie</th><th>S</th>
+                                </tr>
+       -->
+       {% for stock in stocks %}
+                            {{ dump(stock) }}
+                            <!--
+                            <tr>
+                                 <td><a href="article_suppr/{{ stock.id }}">suppr</a></td>
+                            </tr>
+                             // -->
+        {% endfor %}
+        </table>
+    </p>
+{% endblock %}
+

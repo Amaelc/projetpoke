@@ -1,0 +1,15 @@
+imie_produit_homepage:
+    path:     /
+    defaults: { _controller: ImieProduitBundle:Stock:index }
+
+imie_produit_voir:
+    path:     /voir/{id}
+    defaults: { _controller: ImieProduitBundle:Produit:voir }
+    
+imie_produit_modifier:
+    path:     /modifier/{id}
+    defaults: { _controller: ImieProduitBundle:Produit:modifier }
+    
+imie_produit_supprimer:
+    path:     /supprimer/{id}
+    defaults: { _controller: ImieProduitBundle:Produit:supprimer }

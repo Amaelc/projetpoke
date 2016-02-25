@@ -1,6 +1,7 @@
 <?php
 
-namespace Imie\Bundle\ProduitBundle\Tests\Controller;
+
+namespace Imie\ProduitBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

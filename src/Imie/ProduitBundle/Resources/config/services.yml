@@ -1,4 +1,6 @@
 services:
 #    imie_produit.example:
-#        class: Imie\Bundle\ProduitBundle\Example
+
+#        class: Imie\ProduitBundle\Example
+
 #        arguments: ["@service_id", "plain_value", %parameter%]

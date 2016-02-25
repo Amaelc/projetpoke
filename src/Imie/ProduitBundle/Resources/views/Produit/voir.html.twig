@@ -1,0 +1,16 @@
+{# src/Imie/ProduitBundle/Resources/views/Produit/voir.html.twig #}
+{% extends "ImieProduitBundle::layout.html.twig" %}
+{% block title %}
+    Voir le détail du produit {{id}} - {{ parent() }}
+{% endblock %}
+{% block produit_body %}
+    <h2>L'id du produit {{ id }}</h2>
+    <div class="well">
+        Ici le détail d'un produit
+    </div>
+    <p>
+        <a href="{{ path('imie_produit_homepage') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste</a>
+        <a href="{{ path('imie_produit_modifier', {'id': id}) }}" class="btn"><i class="icon-edit"></i>Modifier le produit</a>
+        <a href="{{ path('imie_produit_supprimer', {'id': id}) }}" class="btn"><i class="icon-trash"></i>Supprimer le produit</a>
+    </p>
+{% endblock %}
