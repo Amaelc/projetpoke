@@ -2,56 +2,212 @@
 {% block title %} Accueil - {{ parent() }} {% endblock %}
 {% block head %} 
 {{ parent() }} 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.6/css/jquery.dataTables.min.css" /> 
-<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> 
-<script src="https://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script> 
-<script> 
-$(function() { 
-  $('#user-list').DataTable({ 
-        "processing": true, 
-        "serverSide": true, 
-        "ajax": "{{ path('user_paginate') }}", 
-        "sAjaxDataProp": "data", 
-        "pageLength": 10, 
-        "columns":[ 
-            {"data": "id"}, 
-            {"data": "name"}, 
-            {"data": "created_at"} 
-        ] 
-    }); 
-}); 
-</script> 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.6/css/jquery.dataTables.min.css" /> 
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> 
+    <script src="https://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script> 
+    <script> 
+        
+   /* jocapc */
+   
+   /*$(function() { 
+      $('#stock-list').DataTable({ */
+  /* $(document).ready(function() {
+      //var tableDt = $('#stock-list').DataTable({
+      $('#stock-list').DataTable({ 
+            "bAutoWidth": false,
+            
+            "processing": true, 
+            "serverSide": true, 
+            "ajax": "{{ path('imie_stock_paginate') }}", 
+            "sAjaxDataProp": "data", 
+            "pageLength": 10, 
+            "columns":[ 
+                {"data": "categorie"}, 
+                {"data": "nom"} ,
+                
+                {"data": "taille"}, 
+                {"data": "couleur"}, 
+                {"data": "qtestock"}, 
+                
+                {"data": "qtedefectueux"},
+                {"data": "description"}, 
+                {"data": "prix"}, 
+                {"data": "lienmaj"}, 
+
+            ] 
+        }); 
+    });*/
+    
+    /*var table = $('#example').DataTable();
+ 
+    var filteredData = table
+    .column( 0 )
+    .data()
+    .filter( function ( value, index ) {
+        return value > 20 ? true : false;
+    } );*/
+    
+    /* Custom filtering function which will search data in column four between two values 
+    $.fn.dataTable.ext.search.push(
+        function( settings, data, dataIndex ) {
+            var min = parseInt( $('#min').val(), 10 );
+            var max = parseInt( $('#max').val(), 10 );
+            var age = parseFloat( data[3] ) || 0; // use data for the age column
+
+            if ( ( isNaN( min ) && isNaN( max ) ) ||
+                 ( isNaN( min ) && age <= max ) ||
+                 ( min <= age   && isNaN( max ) ) ||
+                 ( min <= age   && age <= max ) )
+            {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    $(document).ready(function() {
+        var table = $('#example').DataTable();
+        // Event listener to the two range filtering inputs to redraw on input
+        $('#min, #max').keyup( function() {
+            table.draw();
+        } );
+    } );*/
+    
+    
+    </script> 
+    
+        <style type="text/css" title="currentStyle">
+			@import "{{ asset('bundles/produit/css/') }}demo_page.css";
+			@import "{{ asset('bundles/produit/css/') }}demo_table.css";
+			@import "{{ asset('bundles/produit/css/') }}themes/base/jquery-ui.css";
+			@import "{{ asset('bundles/produit/css/') }}themes/smoothness/jquery-ui-1.7.2.custom.css";
+			@import "{{ asset('bundles/produit/css/') }}jquery.multiselect.css";
+	</style>
+        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery-1.4.4.min.js" type="text/javascript"></script> -->
+        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery.dataTables.js" type="text/javascript"></script>  -->
+        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery-ui.js" type="text/javascript"></script> -->
+        <script src="{{ asset('bundles/produit/js/') }}jquery.dataTables.columnFilter.js" type="text/javascript"></script>
+	<script src="{{ asset('bundles/produit/js/') }}jquery.multiselect.js" type="text/javascript"></script>
+        
+	<script type="text/javascript">
+            /*                "pageLength": 100, */
+        $(document).ready(function(){
+            $('#stock-list').dataTable({ 
+                "bAutoWidth": false,
+                "pageLength": 100, 
+                "processing": true, 
+                "serverSide": true, 
+                "ajax": "{{ path('imie_stock_paginate') }}", 
+                "sAjaxDataProp": "data", 
+
+                "columns":[ 
+                    {"data": "categorie"}, 
+                    {"data": "nom"} ,
+
+                    {"data": "taille"}, 
+                    {"data": "couleur"}, 
+                    {"data": "qtestock"}, 
+
+                    {"data": "qtedefectueux"},
+                    {"data": "description"}, 
+                    {"data": "prix"}, 
+                    {"data": "lienmaj"}, 
+
+                ] 
+            })
+            .columnFilter({
+            aoColumns: [ 
+                    { type: "select", multiple: true, values: [ 'Gecko', 'Trident "New"', 'Trident', 'KHTML', 'Misc', 'Presto', 'Webkit', 'Tasman'], selected: 'Misc'  },
+                    { type: "text" },
+                    { type: "select", multiple: true, sSelector : "#filterPlatform", values: [ 'Win XP', 'Win 95+', 'S60', 'OSX.2+', 'OSX.3+', 'Text only' ] },
+                    { type: "number" },
+                    { type: "select", multiple: true } , 
+                    { type: "text" },
+                    { type: "text" },
+                    { type: "text" },
+                    { type: "text" }
+                    ]
+            });
+            //$("select").multiselect({
+            $("table#stock-list tfoot tr th#cssFilter").find("select").multiselect({
+                                        selectedList: 1,
+                                        multiple: true,
+                                        minWidth: "100",
+                                        height: "auto"
+           });//.multiselectfilter();
+        });
+    </script>
+    <style>
+        #stock-list tr td{
+            /*border:1px solid navy;*/
+        }
+        .monFieldset input{
+            margin-left : 20px;
+            margin-right:3px;
+        }
+        .monFieldset{
+            margin-top : 15px;
+            margin-bottom : 10px;
+        }
+    </style>
 {% endblock %} 
+
+{% block menu %}
+    <ul class="nav nav-pills nav-stacked">
+    <li><a href="">Accueil</a></li>
+    
+    <li><a href="">Regrouper par produit</a></li>
+    
+    <li><a href="">Filtrer par :</a></li>
+    </ul>
+    <form action ="{{ path('imie_produit_homepage') }}" method="POST">
+         dump( post)
+        <fieldset class="monFieldset">
+            <legend>Catégorie</legend>
+            {% dump(post) %}
+            {% for categorie in categories %}
+               <!-- //post[categorie] is defined and post[categorie]== categorie.id ? 'checked': '' -->
+            <input type="checkbox" name="categorie[]" value="{{ categorie.id }}" />{{ categorie.nom }}<br />
+            {% endfor %}
+        </fieldset>
+        
+        <fieldset class="monFieldset">
+            <legend>Taille</legend>
+            {% for taille in tailles %}
+            <input type="checkbox" name="taille[]" value="{{ taille.id }}" />{{ taille.taille }}<br />
+            {% endfor %}
+        </fieldset>
+        
+        <fieldset class="monFieldset">
+            <legend>Couleur</legend>
+            {% for couleur in couleurs %}
+            <input type="checkbox" name="couleur[]" value="{{ couleur.id }}" />{{ couleur.couleur }}<br />
+            {% endfor %}
+        </fieldset>
+        
+        <input type="submit" value="Filtrer" />
+    </form>
+{% endblock %}
+   
 {% block produit_body %}
     <div >
         Liste des produits et des stocks ici (liste sous forme de tableau à adapter avec le modèle du wireframe de jolan)
     </div>
-    
-    <p>
-        <table class="tableStocks">
-        <!--
-                                <tr>
-                                    <th>Image</th><th>Article</th><th>contenu</th><th>date</th><th>auteur</th><th>publication</th><th>Catégorie</th><th>S</th>
-                                </tr>
-       -->
-       {% for stock in stocks %}
-                            {{ dump(stock) }}
-                            <!--
-                            <tr>
-                                 <td><a href="article_suppr/{{ stock.id }}">suppr</a></td>
-                            </tr>
-                             // -->
-        {% endfor %}
-        </table>
-    </p>
-    
     <!-- datatable --> 
-    <table id="user-list"> 
+    <table id="stock-list" class="dataTable"> 
     <thead> 
-        <tr> 
-            <th>ID</th> 
+        <tr>  
+            <th>Cat</th>  
             <th>Nom</th> 
-            <th>Crée le</th> 
+
+            <th>T</th>  
+            <th>C</th>  
+            <th>Qte</th>  
+            <th>Def</th>  
+
+            <th>description</th>  
+            <th>prix</th>
+            <th>Maj</th>
         </tr> 
     </thead> 
     <tbody> 

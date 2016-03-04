@@ -55,18 +55,38 @@ class Produit
     /**
      * @var \Imie\ProduitBundle\Entity\Image
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Image")
+     * ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Image")
+     * @ORM\OneToOne(targetEntity="Imie\ProduitBundle\Entity\Image")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idImage", referencedColumnName="id")
      * })
      */
     private $idimage;
 
-    /**
-     * ManyToOne(targetEntity="Stock", inversedBy="idproduit")
+    /* 
+     * Bidirectional 
+     * ORM\ManyToMany(targetEntity="Genre", inversedBy="listeDesFilms")
+     * ORM\JoinTable(name="_assoc_film_genre",
+     *   joinColumns={ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *   inverseJoinColumns={ORM\JoinColumn(name="film_id", referencedColumnName="id")}
+     * )
+    protected $listeDesGenres;
      */
-    private $listeStock;
+    
+    /**
+     * liste des stocks d'un produit
+     * @var \Imie\ProduitBundle\Entity\Stock
+     * * Unidirectional 
+     * @ORM\OneToMany(targetEntity="Imie\ProduitBundle\Entity\Stock", mappedBy="idproduit")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="idproduit")
+     * })
+     */
+    protected $listeStock;
 
+    
+    
+    
     /**
      * Set nom
      *
@@ -190,5 +210,38 @@ class Produit
     public function getIdimage()
     {
         return $this->idimage;
+    }
+    
+     /**
+     * Add listeStock
+     *
+     * @param \Iabsis\VideothequeBundle\Entity\Stock $listeStock
+     * @return Produit
+     */
+    public function addListeStock(\Iabsis\VideothequeBundle\Entity\Stock $listeStock)
+    {
+        $this->listeStock[] = $listeStock;
+
+        return $this;
+    }
+
+    /**
+     * Remove listeStock
+     *
+     * @param \Iabsis\VideothequeBundle\EntityStovk $listeStock
+     */
+    public function removeListeStock(\Iabsis\VideothequeBundle\Entity\Stock $listeStock)
+    {
+        $this->listeStock->removeElement($listeStock);
+    }
+
+    /**
+     * Get listeStock
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getListeStock()
+    {
+        return $this->listeStock;
     }
 }

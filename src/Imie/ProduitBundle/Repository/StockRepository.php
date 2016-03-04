@@ -19,14 +19,14 @@ class StockRepository extends EntityRepository
 {
 
     public function  getStocks(EntityManager $em){  //gérer les parametres pour ramener les stocks d'une ou plusieurs categories, taille(s) ou couleurs
-
-        echo "toto";   
+  
         $queryBuilder = $em->createQueryBuilder();
 
-        $queryBuilder->select("s, c, p")
+        $queryBuilder->select("s, c, p, i")
             ->from("ImieProduitBundle:Stock", "s")
             ->leftJoin("s.idproduit", "p")
             ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
         ;
         //group By
         /*
@@ -57,10 +57,14 @@ class StockRepository extends EntityRepository
     {
         /* Création de la requète avec le query builder */
         $queryBuilder = $this->_em->createQueryBuilder();
-        $queryBuilder->select("s, p, c")
-                     ->from("ImieProduitBundle:Stock", "s")
-                     ->leftJoin("s.categorie", "c")
-                     ->leftJoin("s.produit", "c");
+        $queryBuilder->select("s,t, cl, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+                ->leftJoin("s.idtaille", "t")
+                ->leftJoin("s.idcouleur", "cl")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+           ;
        
         /* Si on reçoit un id de genre valide alors on recherche les Films de ce genre là uniquement */
         if ((int)$idGenre > 0) {
@@ -70,5 +74,61 @@ class StockRepository extends EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
     
+         /**
+     * //ramene tous les éléments de stock pour une categorie
+     * @param int $idGenre Id du genre à rechercher
+     * @return Iabsis\Bundle\VideothequeBundle\Entity\Film[] Liste des films du genre demandé
+     */
+    public function findByProduit($idProduit = 0)
+    {
+        /* Création de la requète avec le query builder */
+        $queryBuilder = $this->_em->createQueryBuilder();
+        $queryBuilder->select("s,t, cl, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+                ->leftJoin("s.idtaille", "t")
+                ->leftJoin("s.idcouleur", "cl")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+           ;
+        /* Si on reçoit un id valide alors on recherche ceux là uniquement */
+        if ((int)$idProduit > 0) {
+            $queryBuilder->where("s.idproduit=:idproduit")->setParameter("idproduit", (int)$idProduit);
+        }
+        /* Puis on retourne la liste des films du genre demandé */
+        return $queryBuilder->getQuery()->getResult();
+    }
     
+    public function search($data, $page = 0, $max = NULL, $getResult = true) 
+    { 
+        $qb = $this->_em->createQueryBuilder(); 
+        $query = isset($data['query']) && $data['query']?$data['query']:null; 
+
+        $qb->select("s,  t, cl, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+                ->leftJoin("s.idtaille", "t")
+                ->leftJoin("s.idcouleur", "cl")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+        ;
+
+        if ($query) { 
+            $qb 
+                ->andWhere('p.nom like :query') 
+                ->setParameter('query', "%".$query."%") 
+            ; 
+        } 
+ 
+        if ($max) { 
+            $preparedQuery = $qb->getQuery() 
+                ->setMaxResults($max) 
+                ->setFirstResult($page * $max) 
+            ; 
+        } else { 
+            $preparedQuery = $qb->getQuery(); 
+        } 
+ 
+        return $getResult?$preparedQuery->getResult():$preparedQuery; 
+    } 
 }

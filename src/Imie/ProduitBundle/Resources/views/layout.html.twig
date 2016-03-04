@@ -1,7 +1,7 @@
 {% extends "::layout.html.twig" %}
-{% block title %}
-    Produit - {{ parent() }}
-{% endblock %}
+{% block title %}général - {{ parent() }}{% endblock %}
+        {% block head %}{{ parent() }} {% endblock %} 
+        {% block stylesheets %}{{ parent() }} {% endblock %}
 {% block body %}
     {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
     <h1>Gestion du stock</h1>

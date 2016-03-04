@@ -67,7 +67,7 @@ class Stock
     /**
      * @var \Imie\ProduitBundle\Entity\Taille
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Taille")
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Taille" , cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idTaille", referencedColumnName="id")
      * })
@@ -77,7 +77,7 @@ class Stock
     /**
      * @var \Imie\ProduitBundle\Entity\Couleur
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Couleur")
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Couleur" , cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idCouleur", referencedColumnName="id")
      * })
@@ -87,14 +87,12 @@ class Stock
     /**
      * @var \Imie\ProduitBundle\Entity\Produit
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Produit")
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Produit" )
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idProduit", referencedColumnName="id")
      * })
      */
     private $idproduit;
-
-
 
     /**
      * Set qtestock

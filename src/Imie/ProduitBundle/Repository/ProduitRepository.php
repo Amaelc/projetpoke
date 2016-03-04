@@ -17,10 +17,52 @@ use Imie\ProduitBundle\Entity\Image;
  */
 class ProduitRepository extends EntityRepository
 {
+   
     /* Créez une méthode getArticles() dans ArticleRepository qui vous permettra de sélectionner
 les articles du plus récent au plus ancien. */
     public function  getProduits(EntityManager $em){
-
+        
         $queryBuilder = $em->createQueryBuilder();
+
+        $queryBuilder->select("p,c, i")
+            ->from("ImieProduitBundle:Produit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+        ;
+        //group By
+        /*
+        ->leftJoin('a.user', 'u')
+        ->where('u = :user')
+        ->setParameter('user', $users)
+       */
+        
+        $query = $queryBuilder->getQuery();
+        
+        $articles = $query->getResult();
+
+        //var_dump($articles);
+        
+        return $articles;
+    }
+    
+    public function  getProduitId(EntityManager $em, $id){
+        
+        $queryBuilder = $em->createQueryBuilder();
+        
+        $queryBuilder->select("p,c, i")
+            ->from("ImieProduitBundle:Produit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
+        ;
+        $query = $queryBuilder->getQuery(); 
+        $articles = $query->getResult();
+
+        //var_dump($articles);
+        if($articles && count($articles)==1){
+            return $articles[0];
+        }
+        return null;
     }
 }

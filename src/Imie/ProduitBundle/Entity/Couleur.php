@@ -33,7 +33,7 @@ class Couleur
     /**
      * Set couleur
      *
-     * @param string $couleur
+     * @param string $textecouleur
      * @return Couleur
      */
     public function setCouleur($couleur)
