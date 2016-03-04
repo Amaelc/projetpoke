@@ -1,16 +1,55 @@
+ {% block head %}
+
+ {% endblock %}
+
 {# src/Imie/ProduitBundle/Resources/views/Produit/voir.html.twig #}
 {% extends "ImieProduitBundle::layout.html.twig" %}
 {% block title %}
-    Voir le détail du produit {{id}} - {{ parent() }}
+    Voir le détail du produit {{produit.id}} - {{ parent() }}
+{% endblock %}
+
+{% block menu %}
+                    <ul class="nav nav-pills nav-stacked">
+                        <a href="{{ path('imie_produit_homepage') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste</a>
+                        <a href="{{ path('imie_produit_modifier', {'id': produit.id}) }}" class="btn"><i class="icon-edit"></i>Modifier le produit</a>
+                        <a href="{{ path('imie_produit_supprimer', {'id': produit.id}) }}" class="btn"><i class="icon-trash"></i>Supprimer le produit</a>
+                    </ul>
 {% endblock %}
 {% block produit_body %}
-    <h2>L'id du produit {{ id }}</h2>
+   {#{{dump(produit)}} #}
     <div class="well">
-        Ici le détail d'un produit
+        <h3 class="nom">{{ produit.nom }}</h3>
+   
+    <div class="description">DESCRIPTION</div>
+    <div class="text">{{ produit.description }}</div>
+    <div class="photo-produit"><img src="{{ asset('bundles/produit/images/')}}{{produit.idimage.nom}}"/></div>
+
+    <table class="tableau">
+        <tr>
+         <th>Couleur</th>
+         <th>Taille</th>
+         <th>Stock</th>
+         <th>Défectueux</th>
+        </tr>
+       
+            {% for unStock in stocksProduit %}
+              <tr>   
+                <td>{{ unStock.idcouleur.couleur }}</td> 
+                <td>{{ unStock.idtaille.taille }}</td> 
+                <td>{{ unStock.qtestock }}</td>
+                <td>{{ unStock.qtedefectueux }}</td>
+             </tr>    
+            {% endfor %} 
+            
+            
+          
+           
+        
+    </table>
+    
+       {#{{dump(stocksProduit)}} #}
+       
+        
+       
     </div>
-    <p>
-        <a href="{{ path('imie_produit_homepage') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste</a>
-        <a href="{{ path('imie_produit_modifier', {'id': id}) }}" class="btn"><i class="icon-edit"></i>Modifier le produit</a>
-        <a href="{{ path('imie_produit_supprimer', {'id': id}) }}" class="btn"><i class="icon-trash"></i>Supprimer le produit</a>
-    </p>
 {% endblock %}
