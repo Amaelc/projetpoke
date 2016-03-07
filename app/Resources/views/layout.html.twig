@@ -19,7 +19,7 @@
             <div id="header" class="hero-unit">
                 {% block header %}
                     <h1>Projet Poke</h1>
-                    <p>&nbsp;</p>
+                    <p>{{(app.user.username is defined )? 'Bienvenue '~app.user.username : 'non connecté'}}</p>
                 {% endblock %}  
             </div>
             <div class="row">

@@ -2,6 +2,14 @@
 {% block title %}général - {{ parent() }}{% endblock %}
         {% block head %}{{ parent() }} {% endblock %} 
         {% block stylesheets %}{{ parent() }} {% endblock %}
+{% block menu %}
+    {% if app.user.username is defined  %}
+    <ul class="nav nav-pills nav-stacked">
+        <li><a href='/projetPoke/web/app_dev.php/logout'>Déconnexion</a></li>
+    </ul>   
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
 {% block body %}
     {# On définit un sous-titre commun à toutes les pages du bundle, par exemple #}
     <h1 class="titreH1">{% block titreH1 %}Accueil - Gestion du stock{% endblock %}</h1>
