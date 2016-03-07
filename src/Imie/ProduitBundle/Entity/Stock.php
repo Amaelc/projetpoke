@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToMany;
 
 use Imie\ProduitBundle\Repository\StockRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Stock
  *
@@ -18,6 +19,8 @@ class Stock
      * @var integer
      *
      * @ORM\Column(name="qteStock", type="integer", nullable=false)
+     * @Assert\Type(type="digit",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $qtestock;
 
@@ -25,6 +28,7 @@ class Stock
      * @var integer
      *
      * @ORM\Column(name="qteDefectueux", type="integer", nullable=false)
+     * @Assert\Type(type="numeric",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
      */
     private $qtedefectueux;
 
@@ -91,6 +95,7 @@ class Stock
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idProduit", referencedColumnName="id")
      * })
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $idproduit;
 
@@ -123,10 +128,9 @@ class Stock
      * @param integer $qtedefectueux
      * @return Stock
      */
-    public function setQtedefectueux($qtedefectueux)
+    public function setQtedefectueux($qtedefectueux=0)
     {
         $this->qtedefectueux = $qtedefectueux;
-
         return $this;
     }
 

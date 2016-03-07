@@ -62,4 +62,9 @@ class Taille
     {
         return $this->id;
     }
+    
+    public function __tostring()
+    {
+        return $this->getTaille();
+    }
 }

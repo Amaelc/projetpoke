@@ -3,6 +3,8 @@
 namespace Imie\ProduitBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Imie\ProduitBundle\Entity\Produit;
+use Imie\ProduitBundle\Form\ProduitType;
 
 class ProduitController extends Controller
 {
@@ -114,12 +116,6 @@ class ProduitController extends Controller
         if (empty($this->tabProduits)){
             $this->indexAction($this->getRequest());
         }
-        /*if ($pos=array_search($id, array_keys(array_values($this->tabProduits)))){
-            $this->pos=$pos;
-            return $pos;
-        }else{
-            return null;
-        }*/
         foreach($this->tabProduits as $key=>$produit){
             if ($produit->getId()==$id){
                 $pos=$key;
@@ -128,4 +124,43 @@ class ProduitController extends Controller
         }
         return  $pos;
     }
+
+    private function createCreateForm(Produit $entity)
+    {
+        $form = $this->createForm(new ProduitType(), $entity, array(
+            'action' => $this->generateUrl('imie_produit_ajouter'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Ajouter'));
+
+        return $form;
+    }
+    
+    public function ajouterAction(){
+        
+        $entity = new Produit();
+        $form   = $this->createCreateForm($entity);
+        
+        $request = $this->getRequest();
+        
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                //$entity->getImage()->upload(); // Nouvelle méthode pour uploader
+                $em->persist($entity->getIdimage());
+                
+                $em->flush();
+                return $this->redirect($this->generateUrl('imie_produit_list'));
+
+            }
+        }
+
+        return $this->render('ImieProduitBundle:Produit:ajouter.html.twig',
+                array('form' => $form->createView()));
+    }
+    
 }

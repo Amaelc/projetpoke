@@ -1,0 +1,29 @@
+ {% block head %}
+
+ {% endblock %}
+
+{% extends "ImieProduitBundle::layout.html.twig" %}
+{% block title %}
+    Ajouter un produit {{ parent() }}
+{% endblock %}
+{% block titreH1 %}Ajouter un produit {% endblock %} 
+{% block menu %}
+    {{ parent() }}
+    <hr style="margin:0;padding:0;"/>
+                    <ul class="nav nav-pills nav-stacked">
+                        <a href="{{ path('imie_produit_list') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste des produits</a>
+                    </ul>
+{% endblock %}
+{% block produit_body %}
+   {#{{dump(produit)}} #}
+    <div class="well">
+        {% block formulaire %}
+            <form method="post" action="{{path('imie_produit_ajouter')}}"
+{{ form_enctype(form) }}>
+{{ form_end(form) }}
+{% endblock formulaire %}
+    </div>
+
+    {#{{dump(stocksProduit)}} #}
+
+{% endblock %}

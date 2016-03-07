@@ -18,6 +18,13 @@ class Image
      * @ORM\Column(name="nom", type="string", length=100, nullable=false)
      */
     private $nom;
+    
+    
+    
+    /**
+     * @var string
+     */
+    public $fichier;
 
     /**
      * @var string

@@ -1,20 +1,21 @@
 {% extends "ImieProduitBundle::layout.html.twig" %}
 {% block title %}
-    Mise à jour du stock {{id}} - {{ parent() }}
+    Ajout de stock  - {{ parent() }}
 {% endblock %}
 {% block menu %}
     {{ parent() }}
     <hr style="margin:0;padding:0;"/>
         <p>
         <a href="{{ path('imie_stock_list') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste des stocks</a>
-        <a href="{{ path('imie_produit_voir', {'id': stock.idproduit.id}) }}" class="btn"><i class="icon-edit"></i>Voir le produit</a>
-        <a href="{{ path('imie_stock_supprimer', {'id': id}) }}" class="btn"><i class="icon-trash"></i>Supprimer ce stock</a>
     </p>
  {% endblock %}  
-{% block titreH1 %}Modifier le stock du produit {% endblock %} 
+{% block titreH1 %}Ajout de stock {% endblock %} 
 {% block produit_body %}
-    <form name="modifierStock" action="{{ path('imie_stock_modifier', {'id': id}) }}" method="POST">
-    <div class="well" >
+    <form name="modifierStock" action="{{ path('imie_stock_modifier',{'id': stock.id} ) }}" method="POST">
+  {# {{dump(form)}}   #}    
+<hr/>
+{# {{ form(form) }} #}
+<div class="well" >
         <table width="100%">
             <tr>
                <td colspan="2">{{ stock.idproduit.idcategorie.nom }}</td>
@@ -30,21 +31,35 @@
             </tr>
         </table>
     </div>
+{{ form_errors(form) }}
+    <div class="well" >
+        <table width="100%">
+            <tr> 
+               <td colspan="1">{{ form_label(form.idproduit) }}{{ form_errors(form.idproduit) }}</td>
+               <td colspan="3">{{ form_widget(form.idproduit) }}</td>
+            </tr>
+            <tr>
+               <td colspan="1">{{ form_label(form.idfournisseur) }}{{ form_errors(form.idfournisseur) }}</td>
+               <td colspan="3">{{ form_widget(form.idfournisseur) }}</td>
+            </tr>
+            <tr>
+               <td width="25%">{{ form_label(form.idtaille) }}{{ form_errors(form.idtaille) }}</td><td>{{ form_widget(form.idtaille) }}</td>
+               <td width="25%">{{ form_label(form.idcouleur) }}{{ form_errors(form.idcouleur) }}</td><td>{{ form_widget(form.idcouleur) }}</td>
+            </tr>
+        </table>
+    </div>
     <div >
         <table class="tableMajStock" width="100%"> 
             <tr>
-               <td  width="25%">Quantité en stock :</td><td width="25%"><input name="qtestock" type="text" value="{{ stock.qtestock }}"  class="inputText" /></td>
-               <td  width="25%">Exemplaires défectueux :</td><td width="25%"><input name="qtedefectueux" type="text" value="{{ stock.qtedefectueux  }}" class="inputText" /></td>
+               <td  width="25%">{{ form_label(form.qtestock) }}{{ form_errors(form.qtestock) }}</td><td width="25%">{{form_widget(form.qtestock) }}</td>
+               <td  width="25%">{{ form_label(form.qtedefectueux) }}{{ form_errors(form.qtedefectueux) }}</td><td width="25%">{{ form_widget(form.qtedefectueux) }}</td>
             </tr>
             <tr>
-               <td colspan="2"></td>
-               <td colspan="2" align="right"><input type="submit"  value="Mettre à jour le stock" class="btn" style="width:100%;" /></td>
+               <td colspan="2">&nbsp;</td>
+               <td colspan="2" align="right"><input type="submit"  value="Modifier ce produit en stock" class="btn" style="width:100%;" /></td>
             </tr>
         </table>
-        <table width="100%"><tr>
-            <td width="25%"><a href="{{ path('imie_stock_modifier', {'id': stockprecedent }) }}" class="btn" ><i class="icon-chevron-left"></i>Stock précédent</a></td><td width="25%">&nbsp;</td>
-            <td width="25%">&nbsp;</td><td width="25%" align="right"><a href="{{ path('imie_stock_modifier', {'id':   stocksuivant }) }}" class="btn"><i class="icon-chevron-right"></i>Stock Suivant</a></td>
-    </tr></table>
     </div>
-    </form>
+
+{{ form_end(form) }}
 {% endblock %}

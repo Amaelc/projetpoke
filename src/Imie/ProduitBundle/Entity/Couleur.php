@@ -62,4 +62,9 @@ class Couleur
     {
         return $this->id;
     }
+    
+    public function __tostring()
+    {
+        return $this->getCouleur();
+    }
 }

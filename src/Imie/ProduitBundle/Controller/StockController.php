@@ -174,19 +174,110 @@ class StockController extends Controller
         //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
         return $this->render('ImieProduitBundle:Stock:voir.html.twig', $variables);
     }
+     
+    public function next($id){
+        $pos=$this->getpos($id);
+        //echo "<br/>\$pos= $pos  / \$id=$id  !";
+        
+        if($pos<count($this->tabStocks)-1){
+            $pos=$pos+1;
+            
+        }else{
+            $pos= 0;  
+        }
+        return $this->tabStocks[$pos]->getId();        //$pos;
+    }
     
-    public function modifierAction($id)
-    {
+    public function prec( $id){
+        $pos=$this->getpos($id);
+        if($pos>0){
+            $pos=  $pos-1;
+        }else{
+            $pos= count($this->tabStocks)-1;  
+        }   
+        return $this->tabStocks[$pos]->getId();        // $pos;
+    }
+    
+    //retourne la position du stock dansla tableau
+    public function getPos($id){
+        if (empty($this->tabStocks)){
+            $this->indexAction($this->getRequest());
+        }
+        $pos=0;
+        foreach($this->tabStocks as $key => $stock){
+            if ($stock->getId()==$id){
+                $pos=$key;
+                //echo "<br/>trouvé stock N° $key = ".$stock->getId()."";
+                break;
+            }
+        }
+        return $pos;
+    }
+    
+    public function ajoutAction(Request $req){
+        $stock = new Stock();
+        //$formBuilder = $this->createFormBuilder($stock);
+        $form = $this->createForm(new StockType(), $stock, array('action' => $this->generateUrl('imie_stock_ajouter')));
+        /*
+        $formBuilder
+        ->add('qtestock', 'text')
+        ->add('qtedefectueux', 'text')
+        ->add('Ajouter', 'submit')
+        ->setAction($this->generateUrl('imie_stock_ajout'));
+        $form = $formBuilder->getForm();
+         */
+        //cas de l'ajout à partir du formulaire
+        $form->handleRequest($req);
+        if($form->isValid()){
+            // Faire quelque chose comme sauvegarder en base return $this->redirect($this->generateUrl('imie_produits_liste'));
+
+            $em = $this->getDoctrine()->getManager();
+            /* $img = new Image();
+            $img->setUrl('http://www.gettyicons.com/download/? id=3027&t=png&s=256');
+            $img->setAlt('Image de test.'); */
+            /* $stock = new Stock();
+            $stock->setIdproduit('test');
+            $stock->setDescription('Ceci est un produit de test.');
+            $stock->setPrix('199.99');
+            $stock->setImage($img);
+            //$em->persist($img); // Il faut persister l'image aussi */
+            // $stock->setDateAchat(new date("Y-m-d"));
+            //$stock->setIdutilisateur(1);
+            $em->persist($stock);
+            $em->flush();
+            $req->getSession()->getFlashBag()->add('info', 'Stock ajouté.');
+            return $this->redirect($this->generateUrl('imie_stock_list'));
+        }
+
+        return $this->render('ImieProduitBundle:Stock:ajouter.html.twig',
+        array('form' => $form->createView()));
+    }
+    
+    public function modifierAction($id,Request $req){
         // initialisations
         $variables = array();
         $variables['id'] =$id;
 
-        $entityManager = $this->getDoctrine()->getManager();  
-        // récupérer le paramètre 
+        $entityManager = $this->getDoctrine()->getManager();  // récupérer le paramètre 
         $repo = $entityManager->getRepository('ImieProduitBundle:Stock');
-        $stock = $repo->getStockId($entityManager,$id);  
-        $variables['stock'] = $stock; 
+        $stock = $repo->getStockId($entityManager,$id);
         
+        //cas de la modification (objet request)
+        $form = $this->createForm(new StockType(), $stock, array('action' => $this->generateUrl('imie_stock_modifier',array('id' => $id) )));
+        $form->handleRequest($req);
+        if($form->isValid()){
+            // Pas besoin de persist quand l'entité vient du repository
+            $entityManager->flush();
+            // Redirection vers la liste des stocks
+            //return $this->redirect($this->generateUrl('imie_stock_index'));
+            //return  $this->indexAction($this->getRequest());  
+            return $this->redirect($this->generateUrl('imie_stock_list'));
+        }
+        
+
+        
+        
+        $variables['stock'] = $stock; 
         // On récupère la liste des categories
         $variables['categories'] = $entityManager
                                     ->getRepository('ImieProduitBundle:Categorie')
@@ -205,66 +296,25 @@ class StockController extends Controller
         $variables['stockprecedent'] = $this->prec( $id);
         $variables['stocksuivant'] = $this->next($id);
         
+        $variables['form'] = $form->createView();
+        
         //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
         return $this->render('ImieProduitBundle:Stock:modifier.html.twig', $variables);
+        //return $this->render('ImieProduitBundle:Stock:modifier.html.twig',array('form' => $form->createView()));
     }
     
-    public function next($id)
-    {
-        $pos=$this->getpos($id);
-        //echo "<br/>\$pos= $pos  / \$id=$id  !";
-        
-        if($pos<count($this->tabStocks)-1){
-            $pos=$pos+1;
-            
-        }else{
-            $pos= 0;  
+    public function supprimerAction($id) {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('ImieProduitBundle:Stock:');
+        // On récupère le stock grâce à l'id passé en paramètre
+        $stock = $repo->find($id);
+        if (!$stock) {
+        throw $this->createNotFoundException('Pas de produit n°'.$id);
         }
-        return $this->tabStocks[$pos]->getId();        //$pos;
-    }
-    
-    public function prec( $id)
-    {
-        $pos=$this->getpos($id);
-        if($pos>0){
-            $pos=  $pos-1;
-        }else{
-            $pos= count($this->tabStocks)-1;  
-        }   
-        return $this->tabStocks[$pos]->getId();        // $pos;
-    }
-    
-    //retourne la position du stock dansla tableau
-    public function getPos($id)
-    {
-        if (empty($this->tabStocks)){
-            $this->indexAction($this->getRequest());
-        }
-        $pos=0;
-        foreach($this->tabStocks as $key => $stock){
-            if ($stock->getId()==$id){
-                $pos=$key;
-                //echo "<br/>trouvé stock N° $key = ".$stock->getId()."";
-                break;
-            }
-        }
-        return $pos;
-    }
-    
-    public function ajoutAction(){
-        $stock = new Stock();
-        //$formBuilder = $this->createFormBuilder($stock);
-        $form = $this->createForm(new StockType(), $stock, array('action' => $this->generateUrl('imie_stock_ajouter')));
-        /*
-        $formBuilder
-        ->add('qtestock', 'text')
-        ->add('qtedefectueux', 'text')
-        ->add('Ajouter', 'submit')
-        ->setAction($this->generateUrl('imie_stock_ajout'));
-        $form = $formBuilder->getForm();
-         */
-        
-        return $this->render('ImieProduitBundle:Stock:ajouter.html.twig',
-        array('form' => $form->createView()));
+        // On supprime le produit
+        $em->remove ($stock);
+        $em->flush ();
+        // Redirection vers la liste des produits
+        return $this->redirect($this->generateUrl('imie_stock_list'));
     }
 }    

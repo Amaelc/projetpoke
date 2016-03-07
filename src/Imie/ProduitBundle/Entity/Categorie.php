@@ -55,11 +55,14 @@ class Categorie
 
     /**
      * Get id
-     *
      * @return integer 
      */
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function __toString() {
+        return $this->getNom();
     }
 }

@@ -244,4 +244,9 @@ class Produit
     {
         return $this->listeStock;
     }
+    
+    public function __tostring()
+    {
+        return $this->getNom();
+    }
 }

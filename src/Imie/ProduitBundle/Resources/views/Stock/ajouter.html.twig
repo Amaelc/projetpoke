@@ -12,10 +12,10 @@
 {% block titreH1 %}Ajout de stock {% endblock %} 
 {% block produit_body %}
     <form name="ajoutStock" action="{{ path('imie_stock_ajouter') }}" method="POST">
-  {{dump(form)}}      
+    {# {{dump(form)}}   #}     
 <hr/>
 {# {{ form(form) }} #}
-{{ form_start(form) }}
+
 {{ form_errors(form) }}
     <div class="well" >
         <table width="100%">
@@ -45,6 +45,6 @@
             </tr>
         </table>
     </div>
-    </form>
+
 {{ form_end(form) }}
 {% endblock %}

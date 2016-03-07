@@ -92,4 +92,9 @@ class Utilisateur
     {
         return $this->id;
     }
+    
+    public function __tostring()
+    {
+        return $this->getNom();
+    }
 }

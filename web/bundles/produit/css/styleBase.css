@@ -59,6 +59,16 @@ input[type="radio"], input[type="checkbox"] {
 
 .monFieldset{
     font-size:11px; 
+    padding-right:25px;
+}
+
+.monFieldset select{
+    width:190px;
+}
+
+#stock_idproduit{
+    width:100%;
+    
 }
 
 .menu{
