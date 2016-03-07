@@ -12,39 +12,33 @@ use Imie\ProduitBundle\Repository\ProduitRepository;
 use Imie\ProduitBundle\Repository\StockRepository;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; 
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class StockController extends Controller
 {  
-    //public function indexAction(){
+    protected $pos = 0;
+    protected $tabStocks = array();
+    
     public function indexAction(Request $request) {
-        //var_dump($request);
-        //$post = $request->request->get('form');
-        //echo $post['categorie'];      //si formulaire sans entity
-         $post = array();
-         // var_dump($request->request->get); 
-        /*
-         ["request"]=> object(Symfony\Component\HttpFoundation\ParameterBag)#9 (1) { 
-            ["parameters":protected]=> array(1) { 
-                ["categorie"]=> array(2) { 
-                    [0]=> string(1) "1" 
-                    [1]=> string(1) "2" } } } 
-         ["query"]=> object(Symfony\Component\HttpFoundation\ParameterBag)#10 (1) { 
-         ["parameters":protected]=> array(0) { } }        
-         */
+
+        $categories = $request->get('categorie'); 
+        $couleurs = $request->get('couleur'); 
+        $tailles = $request->get('taille');
+        $regrouper = $request->get('regrouper');
+          
+        $parametres['categories']=$categories;
+        $parametres['couleurs']=$couleurs;
+        $parametres['tailles']=$tailles;
+        $parametres['regrouper']=$regrouper;
+         
         $entityManager = $this->getDoctrine()->getManager();  
         
         // On récupère le stock 
         $repo = $entityManager->getRepository('ImieProduitBundle:Stock');
-        $stocks = $repo->getStocks($entityManager);   // gérer les cas ou on veut les stocks pour une ou plusieurs cétagoires, couleurs tailles
-        $variables['stocks'] = $stocks; //
-
-        // On récupère le nb en stock 
-        // $variables['total_stock'] = $entityManager->getRepository(":Stock")->countAll();
-
-        // On récupère la liste des produits
-        /* $variables['produits'] = $entityManager
-                                    ->getRepository('ImieProduitBundle:Produit')
-                                    ->fetchAllWithProduit();*/
+        $stocks = $repo->getStocks($entityManager, $parametres);   // gérer les cas ou on veut les stocks pour une ou plusieurs cétagoires, couleurs tailles
+        $variables['stocks'] = $stocks;
+        
+        //$variables['tabstocks'] = array_values($stock);
 
         // On récupère la liste des categories
         $variables['categories'] = $entityManager
@@ -61,21 +55,38 @@ class StockController extends Controller
                                     ->getRepository('ImieProduitBundle:Couleur')
                                     ->findAll();
         
-        $variables['post'] = $post;
-
+        $variables['pcategories']   = $categories;
+        $variables['pcouleurs']     = $couleurs;
+        $variables['ptailles']      = $tailles;
+        $variables['pregrouper']    = $regrouper;
+        
+        //stockage en session
+        $session = $request->getSession();
+        $session->set('variables', $variables);
+        //$this->tabStocks =$stocks;
+        
+        if(!isset($regrouper) || empty($regrouper)){
+            unset($this->tabStocks);
+            $p=0;
+            foreach($stocks as $stock){
+                    $this->tabStocks[$p] =$stock;     //  [$stock->getId()]
+                    $p++;
+                    //echo "<br/>stock N° $p = ".$stock->getId()."";
+            }
+        }
+        
         return $this->render('ImieProduitBundle:Stock:index.html.twig', $variables); 
     }
     
     
- 
+  
     /** 
-     * // pour datatable via route imie_stock_paginate
-     */ 
-    /** 
-     * @Route("/paginate", name="user_paginate") 
+     * @Route("/paginate", name="user_paginate")
+     * // pour datatables en ajax  
      */ 
     public function paginateAction(Request $request) 
     { 
+        //echo "<br/>paginateAction";
         $length = $request->get('length'); 
         $length = $length && ($length!=-1)?$length:0; 
  
@@ -97,49 +108,6 @@ class StockController extends Controller
             'recordsTotal' => count($this->getDoctrine()->getRepository('ImieProduitBundle:Stock')->search(array(), 0, false)) 
         ); 
         
-        
-        /*
-         exemple Stock {#503 ▼
-            -qtestock: 40
-            -qtedefectueux: 1
-            -dateachat: DateTime {#502 ▶}
-            -id: 6
-            -idutilisateur: Utilisateur {#504 ▶}
-            -idfournisseur: Fournisseur {#505 ▶}
-            -idtaille: Taille {#506 ▼
-              +__isInitialized__: true
-              -taille: "38"
-              -id: 7
-               …2
-            }
-            -idcouleur: Couleur {#485 ▼
-              +__isInitialized__: true
-              -couleur: "noir"
-              -id: 2
-               …2
-            }
-            -idproduit: Produit {#507 ▼
-              -nom: "Legging noir effet jeans imprimé motif fille manga"
-              -description: """
-                Superbe leggings très tendance pour un effet jeans des plus surprenant. Imitation ceinture à la taille, effet délavé et imprimé avec un motif fille manga sur la cuisse. Leggings très confortable et léger par sa matière douce et extensible.\r\n
-                Couleur en différents tons de noir.\r\n
-                Modèle : Manga.\r\n
-                Composition : Coton, spandex\r\n
-                Taille unique S/L (36-40) ? 
-                """
-              -prix: "29.00"
-              -id: 7
-              -idcategorie: Categorie {#508 ▶}
-              -idimage: Image {#509 ▼
-                -nom: "Legging.png"
-                -alt: null
-                -url: null
-                -id: 3
-              }
-              -listeStock: null
-            }
-          }
-         */
         foreach ($datas as $data) { 
             $output['data'][] = [ 
                 'qtestock'                     => $data->getQtestock(),
@@ -170,5 +138,132 @@ class StockController extends Controller
         } 
  
         return new Response(json_encode($output), 200, ['Content-Type' => 'application/json']); 
-    } 
+    }
+    
+    
+    public function voirAction($id)
+    {
+        // initialisations
+        $variables = array();
+        $variables['id'] =$id;
+        
+        $entityManager = $this->getDoctrine()->getManager();  
+        // récupérer le paramètre 
+        $repo = $entityManager->getRepository('ImieProduitBundle:Stock');
+        $stock = $repo->getStockId($entityManager,$id);  
+        $variables['stock'] = $stock; 
+        
+        // On récupère la liste des categories
+        $variables['categories'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Categorie')
+                                    ->findAll();
+        
+        // On récupère la liste des tailles
+        $variables['tailles'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Taille')
+                                    ->findAll();
+        
+        // On récupère la liste des couleurs
+        $variables['couleurs'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Couleur')
+                                    ->findAll();
+
+        $variables['stockprecedent'] = $this->prec( $id);
+        $variables['stocksuivant'] = $this->next($id);
+        
+        //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
+        return $this->render('ImieProduitBundle:Stock:voir.html.twig', $variables);
+    }
+    
+    public function modifierAction($id)
+    {
+        // initialisations
+        $variables = array();
+        $variables['id'] =$id;
+
+        $entityManager = $this->getDoctrine()->getManager();  
+        // récupérer le paramètre 
+        $repo = $entityManager->getRepository('ImieProduitBundle:Stock');
+        $stock = $repo->getStockId($entityManager,$id);  
+        $variables['stock'] = $stock; 
+        
+        // On récupère la liste des categories
+        $variables['categories'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Categorie')
+                                    ->findAll();
+        
+        // On récupère la liste des tailles
+        $variables['tailles'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Taille')
+                                    ->findAll();
+        
+        // On récupère la liste des couleurs
+        $variables['couleurs'] = $entityManager
+                                    ->getRepository('ImieProduitBundle:Couleur')
+                                    ->findAll();
+        
+        $variables['stockprecedent'] = $this->prec( $id);
+        $variables['stocksuivant'] = $this->next($id);
+        
+        //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
+        return $this->render('ImieProduitBundle:Stock:modifier.html.twig', $variables);
+    }
+    
+    public function next($id)
+    {
+        $pos=$this->getpos($id);
+        //echo "<br/>\$pos= $pos  / \$id=$id  !";
+        
+        if($pos<count($this->tabStocks)-1){
+            $pos=$pos+1;
+            
+        }else{
+            $pos= 0;  
+        }
+        //return $this->tabStocks[$pos]->getId();
+        //echo "<br/> stock suivant de $id = ".$pos."";
+        
+        return $this->tabStocks[$pos]->getId();        //$pos;
+    }
+    
+    public function prec( $id)
+    {
+        $pos=$this->getpos($id);
+        if($pos>1){
+            $pos=  $pos-1;
+        }else{
+            $pos= count($this->tabStocks);  
+        }   
+        //return $this->tabStocks[$pos]->getId();
+        //echo "<br/> stock precedent de $id = ".$pos."";
+        return $this->tabStocks[$pos]->getId();        // $pos;
+    }
+    
+    //retourne la position du stock dansla tableau
+    public function getPos($id)
+    {
+        if (empty($this->tabStocks)){
+            $this->indexAction($this->getRequest());
+        }
+        //echo "<br/>\$this->pos= $this->pos  / \$id=$id  \$this->tabStocks";
+        //print_r($this->tabStocks);
+        //print_r(array_keys(array_values($this->tabStocks)));   
+        //if (in_array($id, $this->tabStocks)){
+        /*if ($pos=array_search($id, array_keys(array_values($this->tabStocks)))){
+            //echo "<br/>\$pos= $pos  / \$id=$id  !";
+            $this->pos=$pos;
+            return $pos;
+        }else{
+            return null;
+        }*/
+        $pos=0;
+        foreach($this->tabStocks as $key => $stock){
+            if ($stock->getId()==$id){
+                $pos=$key;
+                //echo "<br/>trouvé stock N° $key = ".$stock->getId()."";
+                break;
+            }
+        }
+        return $pos;
+    }
 }    

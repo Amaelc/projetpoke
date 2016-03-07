@@ -5,213 +5,101 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.6/css/jquery.dataTables.min.css" /> 
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script> 
     <script src="https://cdn.datatables.net/1.10.6/js/jquery.dataTables.min.js"></script> 
-    <script> 
-        
-   /* jocapc */
-   
-   /*$(function() { 
-      $('#stock-list').DataTable({ */
-  /* $(document).ready(function() {
-      //var tableDt = $('#stock-list').DataTable({
-      $('#stock-list').DataTable({ 
-            "bAutoWidth": false,
-            
-            "processing": true, 
-            "serverSide": true, 
-            "ajax": "{{ path('imie_stock_paginate') }}", 
-            "sAjaxDataProp": "data", 
-            "pageLength": 10, 
-            "columns":[ 
-                {"data": "categorie"}, 
-                {"data": "nom"} ,
-                
-                {"data": "taille"}, 
-                {"data": "couleur"}, 
-                {"data": "qtestock"}, 
-                
-                {"data": "qtedefectueux"},
-                {"data": "description"}, 
-                {"data": "prix"}, 
-                {"data": "lienmaj"}, 
-
-            ] 
-        }); 
-    });*/
-    
-    /*var table = $('#example').DataTable();
- 
-    var filteredData = table
-    .column( 0 )
-    .data()
-    .filter( function ( value, index ) {
-        return value > 20 ? true : false;
-    } );*/
-    
-    /* Custom filtering function which will search data in column four between two values 
-    $.fn.dataTable.ext.search.push(
-        function( settings, data, dataIndex ) {
-            var min = parseInt( $('#min').val(), 10 );
-            var max = parseInt( $('#max').val(), 10 );
-            var age = parseFloat( data[3] ) || 0; // use data for the age column
-
-            if ( ( isNaN( min ) && isNaN( max ) ) ||
-                 ( isNaN( min ) && age <= max ) ||
-                 ( min <= age   && isNaN( max ) ) ||
-                 ( min <= age   && age <= max ) )
-            {
-                return true;
-            }
-            return false;
-        }
-    );
-
-    $(document).ready(function() {
-        var table = $('#example').DataTable();
-        // Event listener to the two range filtering inputs to redraw on input
-        $('#min, #max').keyup( function() {
-            table.draw();
-        } );
-    } );*/
-    
-    
-    </script> 
-    
-        <style type="text/css" title="currentStyle">
-			@import "{{ asset('bundles/produit/css/') }}demo_page.css";
-			@import "{{ asset('bundles/produit/css/') }}demo_table.css";
-			@import "{{ asset('bundles/produit/css/') }}themes/base/jquery-ui.css";
-			@import "{{ asset('bundles/produit/css/') }}themes/smoothness/jquery-ui-1.7.2.custom.css";
-			@import "{{ asset('bundles/produit/css/') }}jquery.multiselect.css";
-	</style>
-        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery-1.4.4.min.js" type="text/javascript"></script> -->
-        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery.dataTables.js" type="text/javascript"></script>  -->
-        <!-- <script src="{{ asset('bundles/produit/js/') }}jquery-ui.js" type="text/javascript"></script> -->
         <script src="{{ asset('bundles/produit/js/') }}jquery.dataTables.columnFilter.js" type="text/javascript"></script>
 	<script src="{{ asset('bundles/produit/js/') }}jquery.multiselect.js" type="text/javascript"></script>
-        
-	<script type="text/javascript">
-            /*                "pageLength": 100, */
-        $(document).ready(function(){
-            $('#stock-list').dataTable({ 
-                "bAutoWidth": false,
-                "pageLength": 100, 
-                "processing": true, 
-                "serverSide": true, 
-                "ajax": "{{ path('imie_stock_paginate') }}", 
-                "sAjaxDataProp": "data", 
-
-                "columns":[ 
-                    {"data": "categorie"}, 
-                    {"data": "nom"} ,
-
-                    {"data": "taille"}, 
-                    {"data": "couleur"}, 
-                    {"data": "qtestock"}, 
-
-                    {"data": "qtedefectueux"},
-                    {"data": "description"}, 
-                    {"data": "prix"}, 
-                    {"data": "lienmaj"}, 
-
-                ] 
-            })
-            .columnFilter({
-            aoColumns: [ 
-                    { type: "select", multiple: true, values: [ 'Gecko', 'Trident "New"', 'Trident', 'KHTML', 'Misc', 'Presto', 'Webkit', 'Tasman'], selected: 'Misc'  },
-                    { type: "text" },
-                    { type: "select", multiple: true, sSelector : "#filterPlatform", values: [ 'Win XP', 'Win 95+', 'S60', 'OSX.2+', 'OSX.3+', 'Text only' ] },
-                    { type: "number" },
-                    { type: "select", multiple: true } , 
-                    { type: "text" },
-                    { type: "text" },
-                    { type: "text" },
-                    { type: "text" }
-                    ]
-            });
-            //$("select").multiselect({
-            $("table#stock-list tfoot tr th#cssFilter").find("select").multiselect({
-                                        selectedList: 1,
-                                        multiple: true,
-                                        minWidth: "100",
-                                        height: "auto"
-           });//.multiselectfilter();
-        });
-    </script>
-    <style>
-        #stock-list tr td{
-            /*border:1px solid navy;*/
-        }
-        .monFieldset input{
-            margin-left : 20px;
-            margin-right:3px;
-        }
-        .monFieldset{
-            margin-top : 15px;
-            margin-bottom : 10px;
-        }
-    </style>
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
 {% endblock %} 
 
 {% block menu %}
+    {{ parent() }}
     <ul class="nav nav-pills nav-stacked">
-    <li><a href="">Accueil</a></li>
-    
-    <li><a href="">Regrouper par produit</a></li>
-    
-    <li><a href="">Filtrer par :</a></li>
+        <li><a href="{{ path('imie_stock_ajouter') }}">Ajouter un produit en stock</a></li>
     </ul>
+    <hr style="margin:0;padding:0;"/>
+    <div id="menu" class="span3">
     <form action ="{{ path('imie_produit_homepage') }}" method="POST">
-         dump( post)
         <fieldset class="monFieldset">
-            <legend>Catégorie</legend>
-            {% dump(post) %}
+            <legend><table><tr><td width="60%">Regrouper</td><td></td></tr></table></legend>
+            <select name="regrouper" >
+                <option value="" {{ (pregrouper is not defined  or pregrouper is null )? 'selected' :'' }} />aucun</option><br />
+                <option value="produit" {{ (pregrouper is defined and pregrouper=="produit")? 'selected' :'' }} />par produit</option><br />
+                <option value="categorie" {{ (regrouper is defined  and pregrouper=="categorie")? 'selected' :'' }} />par catégorie</option>
+            </select>
+        </fieldset>
+        <fieldset class="monFieldset">
+            <legend><table><tr><td width="70%">Catégories</td><td><input type="submit" value="Filtrer" class="btn"/></td></tr></table></legend>
             {% for categorie in categories %}
-               <!-- //post[categorie] is defined and post[categorie]== categorie.id ? 'checked': '' -->
-            <input type="checkbox" name="categorie[]" value="{{ categorie.id }}" />{{ categorie.nom }}<br />
+            <input type="checkbox" name="categorie[]" value="{{ categorie.id }}" {{ (categorie.id in pcategories)? 'checked' :'' }} />{{ categorie.nom }}<br />
             {% endfor %}
         </fieldset>
         
         <fieldset class="monFieldset">
-            <legend>Taille</legend>
+            <legend><table><tr><td width="70%">Filtrer par tailles</td><td><input type="submit" value="Filtrer" class="btn"/></td></tr></table></legend>
             {% for taille in tailles %}
-            <input type="checkbox" name="taille[]" value="{{ taille.id }}" />{{ taille.taille }}<br />
+            <input type="checkbox" name="taille[]" value="{{ taille.id }}" {{ (taille.id in ptailles)? 'checked' :'' }} />{{ taille.taille }}<br />
             {% endfor %}
         </fieldset>
         
         <fieldset class="monFieldset">
-            <legend>Couleur</legend>
+            <legend><table><tr><td width="70%">Filtrer par couleurs</td><td><input type="submit" value="Filtrer" class="btn"/></td></tr></table></legend>
             {% for couleur in couleurs %}
-            <input type="checkbox" name="couleur[]" value="{{ couleur.id }}" />{{ couleur.couleur }}<br />
+            <input type="checkbox" name="couleur[]" value="{{ couleur.id }}" {{ (couleur.id in pcouleurs)? 'checked' :'' }} />{{ couleur.couleur }}<br />
             {% endfor %}
         </fieldset>
         
-        <input type="submit" value="Filtrer" />
+        <input type="submit" value="Filtrer" class="btn" style="width:100%;"/>
     </form>
-{% endblock %}
-   
-{% block produit_body %}
-    <div >
-        Liste des produits et des stocks ici (liste sous forme de tableau à adapter avec le modèle du wireframe de jolan)
     </div>
-    <!-- datatable --> 
-    <table id="stock-list" class="dataTable"> 
+{% endblock %}
+{% block titreH1 %}Liste des produits en stock{% endblock %} 
+{% block produit_body %}
+    <!-- <h3> Liste des produits en stock </h3> -->
+    <table class="pretty" width="100%"> 
     <thead> 
         <tr>  
-            <th>Cat</th>  
-            <th>Nom</th> 
+            <th>Catégorie</th>  
+            <th>Produit</th> 
 
-            <th>T</th>  
-            <th>C</th>  
-            <th>Qte</th>  
-            <th>Def</th>  
+            <th>Gammes<br/>Couleur/Taille</th>  
+            <th>Qte stock</th>  
+            <th>Défectueux</th>  
 
-            <th>description</th>  
             <th>prix</th>
-            <th>Maj</th>
+            <th>Actions</th>
         </tr> 
     </thead> 
     <tbody> 
+    <!--{{ dump(stocks) }}--> 
+    {% for stock in stocks %}
+        <tr>  
+            <td>{{ (stock.idproduit.idcategorie.nom is defined)? stock.idproduit.idcategorie.nom :'' }}{{ (stock.categorie is defined)? stock.categorie:'' }}</td>  
+            <td title="{{ (stock.idproduit.nom is defined)? stock.idproduit.nom | striptags | slice(0, 80)  :''}}{{ (stock.nom is defined)? stock.nom | striptags | slice(0, 80):'' }}[...]">
+                <a href="{{ (stock.id is defined ) ? path('imie_stock_voir', {'id': stock.id}) : ''}}" 
+                   title="{{ (stock.idproduit.nom is defined)? stock.idproduit.nom | striptags | slice(0, 80)  :''}}{{ (stock.nom is defined)? stock.nom | striptags | slice(0, 80):'' }}[...]"
+                   alt="{{ (stock.idproduit.nom is defined)? stock.idproduit.nom | striptags | slice(0, 80)  :''}}{{ (stock.nom is defined)? stock.nom | striptags | slice(0, 80):'' }}[...]"
+                   >
+                    {{ (stock.idproduit.nom is defined)? stock.idproduit.nom | striptags | slice(0, 25)  :''}}{{ (stock.nom is defined)? stock.nom | striptags | slice(0, 25):'' }}[...]
+                </a>
+            </td> 
+            <td>{{ (stock.idcouleur.couleur is defined)? stock.idcouleur.couleur :'' }}{{(stock.gammes is defined)? stock.gammes :'/' }}{{(stock.idtaille.taille is defined)? stock.idtaille.taille :'' }}</td>  
+            <td>{{ (stock.qtestock>0)? stock.qtestock :'' }} </td>  
+            <td class="tddef">{{ (stock.qtedefectueux>0)? stock.qtedefectueux : '' }}</td>  
+
+            <td>{{ (stock.idproduit.prix is defined)? stock.idproduit.prix :'' }}{{ (stock.prix is defined)? stock.prix:'' }}€</td>
+
+            {% if pregrouper is not defined  or pregrouper is null or pregrouper==""  %}
+            <td><a href="{{ (stock.id is defined ) ? path('imie_stock_voir', {'id': stock.id}) : ''}}" >Voir</a> 
+                <a href="{{ (stock.id is defined ) ?  path('imie_stock_modif', {'id': stock.id}): '' }}" >Modifier</a></td>
+            {% else %}
+            <td colspan="2">
+                <a href="{{ (stock.idproduit is defined  ) ? path('imie_produit_voir', {'id': stock.idproduit}) : ''}}" >Voir produit</a> 
+            </td>
+            {% endif %}
+        </tr> 
+    {% endfor %}
     </tbody> 
-    </table> 
-    <!-- fin datatable --> 
+    </table>
+        <p>
+        <a href="{{ path('imie_produit_homepage') }}" class="btn">&nbsp;</a>
+    </p>
 {% endblock %}

@@ -1,16 +1,47 @@
 {# src/Imie/ProduitBundle/Resources/views/Produit/voir.html.twig #}
 {% extends "ImieProduitBundle::layout.html.twig" %}
 {% block title %}
-    Voir le détail du produit {{id}} - {{ parent() }}
+    Voir le détail du stock {{stock.id}} - {{ parent() }}
 {% endblock %}
-{% block produit_body %}
-    <h2>L'id du produit {{ id }}</h2>
-    <div class="well">
-        Ici le détail d'un produit
-    </div>
+{% block titreH1 %}Etat du stock  {{ stock.idproduit.nom }} (id stock={{ stock.id }}) {% endblock %} 
+{% block menu %}
+    {{ parent() }}
+    <hr style="margin:0;padding:0;"/>
     <p>
-        <a href="{{ path('imie_produit_homepage') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste</a>
-        <a href="{{ path('imie_produit_modifier', {'id': id}) }}" class="btn"><i class="icon-edit"></i>Modifier le produit</a>
-        <a href="{{ path('imie_produit_supprimer', {'id': id}) }}" class="btn"><i class="icon-trash"></i>Supprimer le produit</a>
+        <a href="{{ path('imie_stock_list') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste du stock</a>
+        <a href="{{ path('imie_stock_modifier', {'id': stock.id}) }}" class="btn"><i class="icon-edit"></i>Modifier le stock</a>
+        <a href="{{ path('imie_stock_supprimer', {'id': stock.id}) }}" class="btn"><i class="icon-trash"></i>Supprimer le stock</a>
+        <a href="{{ path('imie_produit_voir', {'id': stock.idproduit.id}) }}" class="btn"><i class="icon-edit"></i>Voir le produit</a>
+    </p>
+ {% endblock %}   
+{% block produit_body %}
+    <div class="well" >
+        <table width="100%">
+            <tr>
+               <td colspan="2">{{ stock.idproduit.idcategorie.nom }}</td>
+               <td colspan="2">{{ stock.idproduit.nom }}</td>
+            </tr>
+            <tr>
+                <td  colspan="2" ><img src="{{ asset('bundles/produit/images/')}}{{ (stock.idproduit.idimage.nom is defined)? stock.idproduit.idimage.nom :''}}" /></td>
+                <td colspan="2" width="50%">{{ stock.idproduit.description }}</td>
+            </tr>
+            <tr>
+               <td width="25%">Taille :</td><td>{{ (stock.idtaille.taille is defined)?  stock.idtaille.taille:''  }}</td>
+               <td width="25%">Couleur :</td><td>{{ (stock.idcouleur.couleur is defined)?  stock.idcouleur.couleur:''  }}</td>
+            </tr>
+        </table>
+    </div>
+    <div >
+        <table class="tableMajStock" width="100%"> 
+            <tr>
+               <td  width="25%">Quantité en stock :</td><td width="25%"><input disabled name="qtestock" type="text" value="{{ stock.qtestock }}"  class="inputText" /></td>
+               <td  width="25%">Exemplaires défectueux :</td><td width="25%"><input disabled name="qtedefectueux" type="text" value="{{ stock.qtedefectueux  }}" class="inputText" /></td>
+            </tr>
+        </table>
+    </div>
+    <table width="100%"><tr>
+            <td width="25%"><a href="{{ path('imie_stock_voir', {'id': stockprecedent }) }}" class="btn" ><i class="icon-chevron-left"></i>Stock précédent</a></td><td width="25%">&nbsp;</td>
+            <td width="25%">&nbsp;</td><td width="25%" align="right"><a href="{{ path('imie_stock_voir', {'id':   stocksuivant }) }}" class="btn"><i class="icon-chevron-right"></i>Stock Suivant</a></td>
+    </tr></table>
     </p>
 {% endblock %}

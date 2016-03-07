@@ -17,35 +17,112 @@ use Imie\ProduitBundle\Entity\Image;
  */
 class StockRepository extends EntityRepository
 {
-
-    public function  getStocks(EntityManager $em){  //gérer les parametres pour ramener les stocks d'une ou plusieurs categories, taille(s) ou couleurs
-  
+    // retourne la liste de produits en stocks
+    // gére les parametres pour ramener les stocks d'une ou plusieurs categories, ou par taille(s) ou couleurs
+    // ou regroupement par produit
+    public function  getStocks(EntityManager $em, $parametres){  
+        //$parametres de where
+            //categories $wct
+            $wct=' 1=1 ';
+            if(isset($parametres['categories']) && is_array($parametres['categories'])){
+                $wct='';
+                $or=' ';
+                foreach( $parametres['categories'] as $pcategorie ){
+                    $wct .=$or.' c.id='.$pcategorie.' ';
+                    $or=' OR ' ;
+                }  
+            }
+            //echo "<br/>\$wct=".$wct."";
+            //couleurs $wco
+            $wco=' 1=1 ';
+            if(isset($parametres['couleurs']) && is_array($parametres['couleurs'])){
+                $wco='';
+                $or=' ';
+                foreach( $parametres['couleurs'] as $pcouleur ){
+                    $wco .=$or.' s.idcouleur='.$pcouleur.' ';
+                    $or=' OR ' ;
+                }  
+            }
+            //echo "<br/>\$wco=".$wco."";
+            //tailles $wt
+            $wt=' 1=1 ';
+            if(isset($parametres['tailles']) && is_array($parametres['tailles'])){
+                $wt='';
+                $or=' ';
+                foreach( $parametres['tailles'] as $ptaille ){
+                    $wt .=$or.' s.idtaille='.$ptaille.' ';
+                    $or=' OR ' ;
+                }  
+            }
+            //echo "<br/>\$wt=".$wt."";
+            
+        //paramètres de regroupement group By
+        if(isset($parametres['regrouper']) && $parametres['regrouper']=="produit"){ 
+           /* $q = $queryBuilder->select("'IDENTITY(s.id) AS id',  sum(s.qtestock) as qtestock, sum(s.qtedefectueux) as qtedefectueux, s.idproduit ")
+            ->from("ImieProduitBundle:Stock", "s")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")  
+            ;*/
+            $query  = $em->createQuery("SELECT 
+             count(s.id) as gammes, sum(s.qtestock) as qtestock, sum(s.qtedefectueux) as qtedefectueux,
+             'IDENTITY(s.idproduit) AS idproduit' , p.id as idproduit, p.nom as nom, p.prix as prix, 
+             'IDENTITY(p.idcategorie) AS idcategorie' ,  c.nom as categorie,   
+             'IDENTITY(p.idimage) AS idimage' ,   i.nom as image
+             FROM ImieProduitBundle:Stock s 
+             LEFT JOIN ImieProduitBundle:produit p with s.idproduit = p.id 
+             LEFT JOIN ImieProduitBundle:categorie c with p.idcategorie = c.id 
+             LEFT JOIN ImieProduitBundle:image i with p.idimage = i.id 
+             WHERE ( (".$wct.") AND (".$wco.")  AND (".$wt.") )
+             GROUP BY s.idproduit ,  p.idcategorie, p.idimage, c.nom, i.nom
+             ORDER BY p.idcategorie ASC, s.idproduit ASC
+             ");          
+        }elseif(isset($parametres['regrouper']) && $parametres['regrouper']=="categorie"){ 
+            $query  = $em->createQuery("SELECT 
+             count(s.id) as gammes, sum(s.qtestock) as qtestock, sum(s.qtedefectueux) as qtedefectueux,
+             'IDENTITY(s.idproduit) AS idproduit' ,
+             'IDENTITY(p.idcategorie) AS idcategorie' ,  c.nom as categorie  
+             FROM ImieProduitBundle:Stock s 
+             LEFT JOIN ImieProduitBundle:produit p with s.idproduit = p.id 
+             LEFT JOIN ImieProduitBundle:categorie c with p.idcategorie = c.id 
+             WHERE ( (".$wct.") AND (".$wco.")  AND (".$wt.") )
+             GROUP BY  p.idcategorie, c.nom
+             ORDER BY p.idcategorie ASC, s.idproduit ASC
+             ");          
+        }else{
+            $queryBuilder = $em->createQueryBuilder();
+            $q = $queryBuilder->select("s, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")  
+            ;
+            $q->where(" 1 = 1 ")    
+              ->andWhere($wct)
+              ->andWhere($wco)
+              ->andWhere($wt)
+              ;
+            $q->add('orderBy', 'p.idcategorie ASC, s.idproduit ASC,s.idtaille ASC ');
+            $query = $q->getQuery();
+        }
+        $stocks = $query->getResult();
+        return $stocks;
+    }
+    
+    public function  getStockId(EntityManager $em, $id){  
         $queryBuilder = $em->createQueryBuilder();
-
-        $queryBuilder->select("s, c, p, i")
+        $q = $queryBuilder->select("s, c, p, i")
             ->from("ImieProduitBundle:Stock", "s")
             ->leftJoin("s.idproduit", "p")
             ->leftJoin("p.idcategorie", "c")
             ->leftJoin("p.idimage", "i")
+            ->where('s.id = :id')
+            ->setParameter('id', $id)   
         ;
-        //group By
-        /*
-        ->leftJoin('a.user', 'u')
-        ->where('u = :user')
-        ->setParameter('user', $users)
-          */
         
-        $query = $queryBuilder->getQuery();
-        
-        $articles = $query->getResult();
-
-        //var_dump($articles);
-        
-        /*
-        Améliorer cette méthode afin d'intégrer le système de pagination. 
-        */
-        
-        return $articles;
+        $query = $q->getQuery();
+        $stock = $query->getResult();
+        return $stock[0];
     }
     
      /**
@@ -131,4 +208,38 @@ class StockRepository extends EntityRepository
  
         return $getResult?$preparedQuery->getResult():$preparedQuery; 
     } 
+
+    public function  getNextStockId(EntityManager $em, $id){  
+        $queryBuilder = $em->createQueryBuilder();
+        $q = $queryBuilder->select("s, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+            ->where('s.id > :id')
+            ->setParameter('id', $id)
+            ->add('orderBy', 'p.idcategorie ASC, s.idproduit ASC,s.idtaille ASC, s.id ');
+        ;
+        
+        $query = $q->getQuery();
+        $stock = $query->getResult();
+        return $stock[0];
+    }
+    
+    public function  getPrevStockId(EntityManager $em, $id){  
+        $queryBuilder = $em->createQueryBuilder();
+        $q = $queryBuilder->select("s, c, p, i")
+            ->from("ImieProduitBundle:Stock", "s")
+            ->leftJoin("s.idproduit", "p")
+            ->leftJoin("p.idcategorie", "c")
+            ->leftJoin("p.idimage", "i")
+            ->where('s.id < :id')
+            ->setParameter('id', $id)
+            ->add('orderBy', 'p.idcategorie ASC, s.idproduit ASC,s.idtaille ASC, s.id ');
+        ;
+        
+        $query = $q->getQuery();
+        $stock = $query->getResult();
+        return $stock[0];
+    }
 }

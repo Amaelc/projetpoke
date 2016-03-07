@@ -215,10 +215,10 @@ class Produit
      /**
      * Add listeStock
      *
-     * @param \Iabsis\VideothequeBundle\Entity\Stock $listeStock
+     * @param \Imie\ProduitBundleEntity\Stock $listeStock
      * @return Produit
      */
-    public function addListeStock(\Iabsis\VideothequeBundle\Entity\Stock $listeStock)
+    public function addListeStock(\Imie\ProduitBundle\Entity\Stock $listeStock)
     {
         $this->listeStock[] = $listeStock;
 
@@ -228,9 +228,9 @@ class Produit
     /**
      * Remove listeStock
      *
-     * @param \Iabsis\VideothequeBundle\EntityStovk $listeStock
+     * @param \Imie\ProduitBundle\EntityStovk $listeStock
      */
-    public function removeListeStock(\Iabsis\VideothequeBundle\Entity\Stock $listeStock)
+    public function removeListeStock(\Imie\ProduitBundle\Entity\Stock $listeStock)
     {
         $this->listeStock->removeElement($listeStock);
     }

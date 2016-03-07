@@ -40,8 +40,9 @@ and open the template in the editor.
              font-weight: normal; font-style: normal; }
 
 .well{
-    background-color: #cdcdcc;
-    
+    /*background-color: #cdcdcc;*/
+    display:block;
+    heigth:440px;
 }
 
 h3{

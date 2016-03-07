@@ -42,7 +42,7 @@ class Stock
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $id=-1;
 
     /**
      * @var \Imie\ProduitBundle\Entity\Utilisateur
@@ -287,4 +287,10 @@ class Stock
     {
         return $this->idproduit;
     }
+    
+    /*public function __construct(){
+        if(!isset($this->id)){
+            $this->id =-1;
+        }
+    }*/
 }

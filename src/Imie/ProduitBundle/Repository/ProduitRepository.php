@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Imie\ProduitBundle\Entity\Produit;
 use Imie\ProduitBundle\Entity\Stock;
 use Imie\ProduitBundle\Entity\Image;
+
 /**
  * ArticleRepository
  *

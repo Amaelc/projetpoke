@@ -1,8 +1,50 @@
+ {% block head %}
+
+ {% endblock %}
+
 {% extends "ImieProduitBundle::layout.html.twig" %}
-{% block title %} Accueil - {{ parent() }} {% endblock %}
-{% block produit_body %}
-    <h2>Liste des produits</h2>
-    <ul>
-        <li>test</li>
+{% block title %}
+    Liste des produits - {{ parent() }}
+{% endblock %}
+{% block titreH1 %}liste des produits {% endblock %} 
+{% block menu %}
+    {{ parent() }}
+    <ul class="nav nav-pills nav-stacked">
+        <li><a href="{{ path('imie_produit_ajouter') }}">Ajouter un produit</a></li>
     </ul>
+    <hr style="margin:0;padding:0;"/>
+                    <ul class="nav nav-pills nav-stacked">
+                        <a href="{{ '' }}" class="btn"><i class="icon-edit"></i>&nbsp</a>
+                   </ul>
+{% endblock %}
+{% block produit_body %}
+    <!-- {{ dump (produits) }} -->
+    <table class="pretty" width="100%"> 
+    <thead> 
+        <tr>  
+            <th>Catégorie</th>  
+            <th>Produit</th> 
+            <th>Description</th>  
+            <th>Image</th>  
+            <th>prix</th>
+            <th>Fournisseur</th> 
+            <th>Actions</th>
+        </tr> 
+    </thead> 
+    <tbody> 
+        {% for produit in produits %}
+        <tr>  
+            <td>{{ (produit.idcategorie.nom is defined)? produit.idcategorie.nom :'' }}</td>  
+            <td>{{ (produit.nom is defined)? produit.nom | striptags | slice(0, 45)  :''}}[...]</td> 
+            <td>{{ (produit.description is defined)? produit.description | striptags | slice(0, 40)  :''}}[...]</td>  
+            <td><img src="{{ asset('bundles/produit/images/')}}{{ (produit.idimage.nom is defined)? produit.idimage.nom :'' }}" width="80"/></td> 
+            
+            <td>{{ (produit.prix is defined)? produit.prix :'' }}€</td>  
+            <td>{{ (produit.idfournisseur.nom is defined)? produit.idfournisseur.nom :'' }}</td> 
+
+            <td><a href="{{ (produit.id is defined ) ? path('imie_produit_voir', {'id': produit.id}) : ''}}" >Voir</a> 
+                <a href="{{ (produit.id is defined ) ?  path('imie_produit_modifier', {'id': produit.id}): '' }}" >Modifier</a></td>
+
+        </tr> 
+    {% endfor %}
 {% endblock %}
