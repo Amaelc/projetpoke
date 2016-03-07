@@ -98,7 +98,7 @@ class ProduitController extends Controller
     public function prec( $id)
     {
         $pos=$this->getpos($id);
-        if($pos>1){
+        if($pos>0){
             $pos=  $pos-1;
         }else{
             $pos= count($this->tabProduits)-1;  

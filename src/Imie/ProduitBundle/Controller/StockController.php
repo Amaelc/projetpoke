@@ -225,10 +225,10 @@ class StockController extends Controller
     public function prec( $id)
     {
         $pos=$this->getpos($id);
-        if($pos>1){
+        if($pos>0){
             $pos=  $pos-1;
         }else{
-            $pos= count($this->tabStocks);  
+            $pos= count($this->tabStocks)-1;  
         }   
         return $this->tabStocks[$pos]->getId();        // $pos;
     }
