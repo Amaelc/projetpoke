@@ -36,26 +36,16 @@ imie_stock_supprimer:
 
 imie_stock_ajouter:
     path:     /stock/ajout
-    defaults: { _controller: ImieProduitBundle:Stock:ajouter }
+    defaults: { _controller: ImieProduitBundle:Stock:ajout }
     
 imie_stock_ajout_idproduit:  
     path:     /stock/ajout/{id}
-    defaults: { _controller: ImieProduitBundle:Stock:ajouter }
-
+    defaults: { _controller: ImieProduitBundle:Stock:ajout }
 
 imie_stock_voir:
     path:     /stock/{id}
     defaults: { _controller: ImieProduitBundle:Stock:voir }
-    
-imie_stock_suivant:
-    path:     /stock/suivant/{id}
-    defaults: { _controller: ImieProduitBundle:Stock:next }
-    
-imie_stock_precedent:
-    path:     /stock/suivant/{id}
-    defaults: { _controller: ImieProduitBundle:Stock:prec }
-   
-   
+      
 imie_stock_list:
     path:     /list
     defaults: { _controller: ImieProduitBundle:Stock:index }

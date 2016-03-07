@@ -122,7 +122,11 @@ class StockRepository extends EntityRepository
         
         $query = $q->getQuery();
         $stock = $query->getResult();
-        return $stock[0];
+        if(isset($stock[0]) && !empty($stock[0]) && is_object($stock[0])){
+            return $stock[0];
+        }else{
+            return null;
+        }
     }
     
      /**

@@ -10,6 +10,7 @@ use Imie\ProduitBundle\Entity\Produit;
 use Imie\ProduitBundle\Entity\Stock;
 use Imie\ProduitBundle\Repository\ProduitRepository;
 use Imie\ProduitBundle\Repository\StockRepository;
+use Imie\ProduitBundle\Form\StockType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; 
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -248,5 +249,22 @@ class StockController extends Controller
             }
         }
         return $pos;
+    }
+    
+    public function ajoutAction(){
+        $stock = new Stock();
+        //$formBuilder = $this->createFormBuilder($stock);
+        $form = $this->createForm(new StockType(), $stock, array('action' => $this->generateUrl('imie_stock_ajouter')));
+        /*
+        $formBuilder
+        ->add('qtestock', 'text')
+        ->add('qtedefectueux', 'text')
+        ->add('Ajouter', 'submit')
+        ->setAction($this->generateUrl('imie_stock_ajout'));
+        $form = $formBuilder->getForm();
+         */
+        
+        return $this->render('ImieProduitBundle:Stock:ajouter.html.twig',
+        array('form' => $form->createView()));
     }
 }    
