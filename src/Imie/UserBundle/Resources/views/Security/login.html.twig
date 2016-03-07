@@ -13,6 +13,7 @@
 
   {# Le formulaire, avec URL de soumission vers la route « login_check » comme on l'a vu #}
   <form action="{{ path('login_check') }}" method="post">
+    <h3>Merci de bien vouloir s'identifier!</h3>
     <label for="username">Login :</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
