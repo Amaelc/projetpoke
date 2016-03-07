@@ -71,7 +71,6 @@ class StockController extends Controller
             foreach($stocks as $stock){
                     $this->tabStocks[$p] =$stock;     //  [$stock->getId()]
                     $p++;
-                    //echo "<br/>stock N° $p = ".$stock->getId()."";
             }
         }
         
@@ -220,9 +219,6 @@ class StockController extends Controller
         }else{
             $pos= 0;  
         }
-        //return $this->tabStocks[$pos]->getId();
-        //echo "<br/> stock suivant de $id = ".$pos."";
-        
         return $this->tabStocks[$pos]->getId();        //$pos;
     }
     
@@ -234,8 +230,6 @@ class StockController extends Controller
         }else{
             $pos= count($this->tabStocks);  
         }   
-        //return $this->tabStocks[$pos]->getId();
-        //echo "<br/> stock precedent de $id = ".$pos."";
         return $this->tabStocks[$pos]->getId();        // $pos;
     }
     
@@ -245,17 +239,6 @@ class StockController extends Controller
         if (empty($this->tabStocks)){
             $this->indexAction($this->getRequest());
         }
-        //echo "<br/>\$this->pos= $this->pos  / \$id=$id  \$this->tabStocks";
-        //print_r($this->tabStocks);
-        //print_r(array_keys(array_values($this->tabStocks)));   
-        //if (in_array($id, $this->tabStocks)){
-        /*if ($pos=array_search($id, array_keys(array_values($this->tabStocks)))){
-            //echo "<br/>\$pos= $pos  / \$id=$id  !";
-            $this->pos=$pos;
-            return $pos;
-        }else{
-            return null;
-        }*/
         $pos=0;
         foreach($this->tabStocks as $key => $stock){
             if ($stock->getId()==$id){
