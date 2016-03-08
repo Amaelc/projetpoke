@@ -77,8 +77,8 @@ input[type="radio"], input[type="checkbox"] {
     -moz-border-radius: 5px;
     border-radius: 5px;
     border:1px solid grey;
-    background-color:#D9D5C3;
-}
+    background-color:#D9D5C3 ;
+}  
 
 #produit_idimage div{
     float:left;
