@@ -9,16 +9,16 @@ and open the template in the editor.
 */
 /**/
 .hero-unit {
-    padding: 10px;
+    padding: 30px;
     margin-bottom: 5px;
-    font-size: 18px;
+    /*font-size: 18px;
     font-weight: 200;
     line-height: 30px;
     color: inherit;
     background-color: #eeeeee;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
-    border-radius: 6px;
+    border-radius: 6px;*/
 }
 .hero-unit h1 {
     margin-bottom: 0;
@@ -47,9 +47,13 @@ legend {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background-color:#DDEDFD;
-    border:1 px solid navy;
+    background-color:#DDEDFD;    
 }
+
+.span3{
+    margin-top: 40px;
+}
+
 input[type="radio"], input[type="checkbox"] {
     /* margin: 4px 0 0; */
     margin-top: 1px;

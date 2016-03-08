@@ -17,13 +17,15 @@
         
         <div class="container">
             <div id="header" class="hero-unit">
+                 <div class="logo"></div>
                 {% block header %}
-                    <h1>Projet Poke</h1>
-                    <p>{{(app.user.username is defined )? 'Bienvenue '~app.user.username : 'non connecté'}}</p>
+                   {# <h1>Projet Poke</h1>#}
+                    <p class="user">{{(app.user.username is defined )? 'Bienvenue '~app.user.username : 'non connecté'}}</p>
                 {% endblock %}  
             </div>
             <div class="row">
                 <div id="menu" class="span3">
+                   
                    <!-- <h3>Menu</h3> -->
                     {% block menu %}
                     <ul class="nav nav-pills nav-stacked">

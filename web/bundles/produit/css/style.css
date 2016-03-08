@@ -39,6 +39,59 @@ and open the template in the editor.
                  url('/css/webfont/HelveticaNeueLTStd-BdCn.svg#HelveticaNeueLTStd-BdCn') format('svg'); 
              font-weight: normal; font-style: normal; }
 
+body{
+    background-image: url("../img/fond.svg");
+    background-size:cover;
+    
+}
+
+.hero-unit{
+      position: relative;
+    /*padding: 50px;*/
+    margin-left:10px;  /* 150px;*/
+    margin-top: 10px;
+    
+    
+    background-image: url("../img/soleil.svg");
+    background-repeat: no-repeat;
+    background-size:30%;
+    background-position: 0 0;
+    z-index: 1;
+    
+}
+
+.hero-unit h1 {
+    margin-bottom: 0;
+    font-size: 26px; 
+    letter-spacing: -1px;
+    color: inherit;
+}
+
+
+.logo{
+    
+    background-image: url("../img/logo.svg");
+    background-repeat: no-repeat;
+    background-size:30%;
+    background-position: 0 45px;
+    margin-left: -20px;
+    margin-top: ;
+    height:100px;
+    z-index: 2;
+}
+
+.user{
+    position: absolute;
+    margin-left: 750px;
+    margin-top: 10px;
+    z-index: 1;
+}
+
+.row{
+    display: flex;
+    background-color:#F4F2F2;
+     align-content: center;
+}
 .well{
     /*background-color: #cdcdcc;*/
     display:block;
