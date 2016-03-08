@@ -22,7 +22,7 @@ class Stock
      * @Assert\Type(type="digit",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
      * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
-    private $qtestock;
+    private $qtestock=0;
 
     /**
      * @var integer
@@ -30,7 +30,7 @@ class Stock
      * @ORM\Column(name="qteDefectueux", type="integer", nullable=false)
      * @Assert\Type(type="numeric",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
      */
-    private $qtedefectueux;
+    private $qtedefectueux=0;
 
     /**
      * @var \DateTime

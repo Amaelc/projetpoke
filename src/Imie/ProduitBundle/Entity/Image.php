@@ -3,7 +3,7 @@
 namespace Imie\ProduitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Image
  *
@@ -16,6 +16,8 @@ class Image
      * @var string
      *
      * @ORM\Column(name="nom", type="string", length=100, nullable=false)
+     * @Assert\Type(type="string",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $nom;
     
@@ -29,14 +31,16 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="alt", type="string", length=500, nullable=false)
+     * @ORM\Column(name="alt", type="string", length=500, nullable=true)
+     * @Assert\Type(type="string",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $alt;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=500, nullable=false)
+     * @ORM\Column(name="url", type="string", length=500, nullable=true)
      */
     private $url;
 

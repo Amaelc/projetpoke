@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Imie\ProduitBundle\Form\ImageType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+
 
 class ProduitType extends AbstractType
 {
@@ -17,10 +19,10 @@ class ProduitType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('description')
+            ->add('description',TextareaType::class)
             ->add('prix')
-            ->add('idcategorie')            
-            ->add('idimage', new ImageType()) // Ajout du formulaire
+            ->add('idcategorie','entity', array('class'=>'ImieProduitBundle:Categorie','label'=>'Sélectionnez une catégorie'))            
+            ->add('idimage', new ImageType(), array('label'=>'Sélectionnez une image')) // Ajout du formulaire
             ->getForm();
         ;
     }

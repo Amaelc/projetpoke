@@ -4,6 +4,7 @@ namespace Imie\ProduitBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Produit
  *
@@ -49,6 +50,8 @@ class Produit
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idCategorie", referencedColumnName="id")
      * })
+     * @Assert\Type(type="\Imie\ProduitBundle\Entity\Categorie",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
+     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $idcategorie;
 
