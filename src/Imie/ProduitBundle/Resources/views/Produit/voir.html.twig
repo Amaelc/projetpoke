@@ -18,15 +18,19 @@
                     </ul>
 {% endblock %}
 {% block produit_body %}
-   {#{{dump(produit)}} #}
-    <div class="well">
-        <h3 class="nom">{{ produit.nom }}</h3>
 
-        <div class="description">DESCRIPTION</div>
-        <div class="text">{{ produit.description }}</div>
-        <div class="photo-produit"><img src="{{ asset('bundles/produit/images/')}}{{produit.idimage.nom}}"/></div>
+    <div class="well" >
+        <table width="100%">
+            <tr>
+               <td colspan="4" class="titre-produit">{{ produit.nom }}</td>
+            </tr>
+            <tr>
+                <td>{{ (unStock.idcouleur.couleur is defined)? unStock.idcouleur.couleur :'' }}</td> 
+                <td colspan="2" class="img-produit"><img src="{{ (produit.idimage.nom is defined)? asset('bundles/produit/images/' ~ produit.idimage.nom) : asset('bundles/produit/img/equipe-ninja.png')}}" /></td>
+                <td colspan="2" width="50%">{{ produit.description }}</td>
+            </tr>
+        </table>
     </div>
-    
     <div>
      Aperçu des gammes en stock pour ce produit :
     <table class="pretty" width="100%">

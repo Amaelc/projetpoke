@@ -32,8 +32,6 @@ class Image
      * @var string
      *
      * @ORM\Column(name="alt", type="string", length=500, nullable=true)
-     * @Assert\Type(type="string",message="Le champ saisi {{ value }} n'est pas un {{ type }}")
-     * @Assert\NotBlank(message="Ce champ ne peut pas être vide.")
      */
     private $alt;
 
@@ -133,4 +131,36 @@ class Image
     {
         return $this->id;
     }
+    
+    protected function getUploadRootDir()
+    {
+    // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+    return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    
+    }
+
+    protected function getUploadDir()
+    {
+    // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche le document/image dans la vue.
+    return 'bundles/produit/images';
+    
+    }
+    
+    public function upload()
+    {
+    // La propriété fichier peut être vide
+    if (null === $this->fichier) 
+    {
+        return;
+        
+    }
+    // On génère un nom de fichier aléatoire
+    $name = sha1(uniqid(mt_rand(), true)).'.'.$this->fichier->getClientOriginalExtension();
+    
+    // On déplace le fichier envoyé dans le répertoire de notre choix
+    $this->fichier->move($this->getUploadRootDir(), $name);
+    
+    // On sauvegarde le nom de fichier dans notre attribut $nom
+    $this->nom = $name;
+}
 }

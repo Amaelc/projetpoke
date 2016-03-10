@@ -19,15 +19,31 @@
                     </ul>
 {% endblock %}
 {% block produit_body %}
-   {#{{dump(produit)}} #}
-    <div class="well">
-        <h3 class="nom">{{ produit.nom }}</h3>
+    <table width="100%">
+            <tr>
+                <td>
+                    {% block formulaire %}
+            <form method="post" action="{{path('imie_produit_modifier', {'id': produit.id})}}"
+{{ form_enctype(form) }}>
+ {{ form_errors(form) }}
+                {{ form_label(form.idcategorie) }}{{ form_errors(form.idcategorie) }}
+                 {{ form_widget(form.idcategorie, {'attr': {'class': 'form-idcategorie'}}) }}
 
-        <div class="description">DESCRIPTION</div>
-        <div class="text">{{ produit.description }}</div>
-        <div class="photo-produit"><img src="{{ asset('bundles/produit/images/')}}{{produit.idimage.nom}}"/></div>
-    </div>
-    
+                {{ form_label(form.nom) }}{{ form_errors(form.nom) }}
+                 {{ form_widget(form.nom, {'attr': {'class': 'form-nom'}}) }}
+                
+                {{ form_label(form.description) }}{{ form_errors(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-description'}}) }}
+                
+                {{ form_label(form.prix) }}{{ form_errors(form.prix) }}
+                 {{ form_widget(form.prix, {'attr': {'class': 'form-prix'}}) }}
+{{ form_end(form) }}
+{% endblock formulaire %}
+                </td> 
+                <td class="img-produit"><img src="{{ (produit.idimage.nom is defined)? asset('bundles/produit/images/' ~ produit.idimage.nom) : asset('bundles/produit/img/equipe-ninja.png')}}" /></td>
+
+            </tr>
+        </table>
     <div>
      Aperçu des gammes en stock pour ce produit :
     <table class="pretty" width="100%">

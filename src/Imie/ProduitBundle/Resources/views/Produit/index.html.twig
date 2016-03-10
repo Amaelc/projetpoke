@@ -42,10 +42,10 @@
             <td>{{ (produit.prix is defined)? produit.prix :'' }}€</td>  
             <td>{{ (produit.idfournisseur.nom is defined)? produit.idfournisseur.nom :'' }}</td> 
 
-            <td>
-                <!--<a href="{{ (produit.id is defined ) ? path('imie_produit_voir', {'id': produit.id}) : ''}}" >Voir</a>--> 
-                <a href="{{ (produit.id is defined ) ?  path('imie_produit_modifier', {'id': produit.id}): '' }}" >Modifier</a>&nbsp;
+            <td><a href="{{ (produit.id is defined ) ? path('imie_produit_voir', {'id': produit.id}) : ''}}" >Voir</a> 
+                <a href="{{ (produit.id is defined ) ?  path('imie_produit_modifier', {'id': produit.id}): '' }}" >Modifier</a>
                 <a href="{{ (produit.id is defined ) ?  path('imie_produit_supprimer', {'id': produit.id}): '' }}" >Supprimer</a></td>
+
         </tr> 
     {% endfor %}
 {% endblock %}

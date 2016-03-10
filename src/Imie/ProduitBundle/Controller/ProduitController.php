@@ -58,31 +58,7 @@ class ProduitController extends Controller
         //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
         return $this->render('ImieProduitBundle:Produit:voir.html.twig', $variables);
     }
-    
-    public function modifierAction($id)
-    {
-        // initialisations
-        $variables = array();
-        $variables['id'] =$id;
         
-        $entityManager = $this->getDoctrine()->getManager();  
-        // récupérer le produit en paramètre 
-        $repo = $entityManager->getRepository('ImieProduitBundle:Produit'); 
-        $produit = $repo->getProduitId($entityManager, $id);   
-        $variables['produit'] = $produit; 
-        
-        //récupérer les stocks de ce produit
-        $repo = $entityManager->getRepository('ImieProduitBundle:Stock'); 
-        $stocksProduit = $repo->findByProduit($id);   
-        $variables['stocksProduit'] = $stocksProduit; 
-        
-        $variables['produitprecedent'] = $this->prec( $id);
-        $variables['produitsuivant'] = $this->next($id);
-        
-        //return $this->render('ImieProduitBundle:Produit:voir.html.twig', array('id' => $id));
-        return $this->render('ImieProduitBundle:Produit:modifier.html.twig', $variables);
-    }
-    
     public function next($id)
     {
         $pos=$this->getpos($id);
@@ -150,7 +126,7 @@ class ProduitController extends Controller
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($entity);
-                //$entity->getImage()->upload(); // Nouvelle méthode pour uploader
+                $entity->getIdimage()->upload(); // Nouvelle méthode pour uploader
                 $em->persist($entity->getIdimage());
                 
                 $em->flush();
@@ -161,6 +137,66 @@ class ProduitController extends Controller
 
         return $this->render('ImieProduitBundle:Produit:ajouter.html.twig',
                 array('form' => $form->createView()));
+    }
+    
+    public function modifierAction($id)
+    {
+        // initialisations
+        $variables = array();
+        $variables['id'] =$id;        
+        
+        $entityManager = $this->getDoctrine()->getManager();  
+        // récupérer le produit en paramètre 
+        $repoProduit = $entityManager->getRepository('ImieProduitBundle:Produit'); 
+        
+        $produit = $repoProduit->find($id);
+        
+        $form = $this->createForm(new ProduitType(), $produit, array('action' => $this->generateUrl('imie_produit_modifier',array('id' => $id) )));
+
+        $form->add('submit', 'submit', array('label' => 'Modifier'));
+        
+        $request = $this->getRequest();
+        
+        if ($request->getMethod() == 'POST') {
+            $form->handleRequest($request);
+
+            if($form->isValid()){
+        
+        $produit->getIdimage()->upload(); // Nouvelle méthode pour uploader
+        $entityManager->persist($produit->getIdimage());
+        $entityManager->flush();
+            }
+        }
+        
+        $variables['produit'] = $produit;        
+        
+        //récupérer les stocks de ce produit
+        $repoStock = $entityManager->getRepository('ImieProduitBundle:Stock'); 
+        $stocksProduit = $repoStock->findByProduit($id);   
+        $variables['stocksProduit'] = $stocksProduit; 
+        
+        $variables['produitprecedent'] = $this->prec( $id);
+        $variables['produitsuivant'] = $this->next($id);
+        
+        $variables['form'] = $form->createView();
+        
+        return $this->render('ImieProduitBundle:Produit:modifier.html.twig', $variables);
+    }
+    
+    public function supprimerAction($id) {
+        
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('ImieProduitBundle:Produit');
+        // On récupère le stock grâce à l'id passé en paramètre
+        $produit = $repo->find($id);
+        if (!$produit) {
+        throw $this->createNotFoundException('Pas de produit n°'.$id);
+        }
+        // On supprime le produit
+        $em->remove ($produit);
+        $em->flush ();
+        // Redirection vers la liste des produits
+        return $this->redirect($this->generateUrl('imie_produit_list'));
     }
     
 }
