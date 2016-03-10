@@ -71,7 +71,7 @@ class Stock
     /**
      * @var \Imie\ProduitBundle\Entity\Taille
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Taille" , cascade={"all"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Taille" ,  fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idTaille", referencedColumnName="id")
      * })
@@ -81,7 +81,7 @@ class Stock
     /**
      * @var \Imie\ProduitBundle\Entity\Couleur
      *
-     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Couleur" , cascade={"all"}, fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="Imie\ProduitBundle\Entity\Couleur" ,  fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idCouleur", referencedColumnName="id")
      * })

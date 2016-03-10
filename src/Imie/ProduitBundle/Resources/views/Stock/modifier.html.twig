@@ -1,6 +1,6 @@
 {% extends "ImieProduitBundle::layout.html.twig" %}
 {% block title %}
-    Ajout de stock  - {{ parent() }}
+    Modifier le stock  - {{ parent() }}
 {% endblock %}
 {% block menu %}
     {{ parent() }}
@@ -9,25 +9,20 @@
         <a href="{{ path('imie_stock_list') }}" class="btn"><i class="icon-chevron-left"></i>Retour à la liste des stocks</a>
     </p>
  {% endblock %}  
-{% block titreH1 %}Ajout de stock {% endblock %} 
+{% block titreH1 %}Modification de stock {% endblock %} 
 {% block produit_body %}
     <form name="modifierStock" action="{{ path('imie_stock_modifier',{'id': stock.id} ) }}" method="POST">
   {# {{dump(form)}}   #}    
-<hr/>
 {# {{ form(form) }} #}
-<div class="well" >
+    <div class="well" >
         <table width="100%">
             <tr>
-               <td colspan="2">{{ stock.idproduit.idcategorie.nom }}</td>
-               <td colspan="2">{{ stock.idproduit.nom }}</td>
+               <td colspan="2"><span class="libelle">Produit :</span><br/>{{ stock.idproduit.nom }}</td>
+               <td colspan="2"><span class="libelle">Catégorie :</span><br/>{{ stock.idproduit.idcategorie.nom }} </td>
             </tr>
             <tr>
                 <td  colspan="2" ><img src="{{ asset('bundles/produit/images/')}}{{ (stock.idproduit.idimage.nom is defined)? stock.idproduit.idimage.nom :''}}" /></td>
-                <td colspan="2" width="50%">{{ stock.idproduit.description }}</td>
-            </tr>
-            <tr>
-               <td width="25%">Taille :</td><td>{{ (stock.idtaille.taille is defined)?  stock.idtaille.taille:''  }}</td>
-               <td width="25%">Couleur :</td><td>{{ (stock.idcouleur.couleur is defined)?  stock.idcouleur.couleur:''  }}</td>
+                <td colspan="2" width="50%" valign="top"><span class="libelle">id = </span>{{ stock.id }}<br/><span class="libelle">Description:</span><br/>{{ stock.idproduit.description }}</td>
             </tr>
         </table>
     </div>

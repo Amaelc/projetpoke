@@ -88,8 +88,9 @@
             <td>{{ (stock.idproduit.prix is defined)? stock.idproduit.prix :'' }}{{ (stock.prix is defined)? stock.prix:'' }}€</td>
 
             {% if pregrouper is not defined  or pregrouper is null or pregrouper==""  %}
-            <td><a href="{{ (stock.id is defined ) ? path('imie_stock_voir', {'id': stock.id}) : ''}}" >Voir</a> 
-                <a href="{{ (stock.id is defined ) ?  path('imie_stock_modif', {'id': stock.id}): '' }}" >Modifier</a></td>
+            <td><!-- <a href="{{ (stock.id is defined ) ? path('imie_stock_voir', {'id': stock.id}) : ''}}" >Voir</a>  -->
+                <a href="{{ (stock.id is defined ) ?  path('imie_stock_modif', {'id': stock.id}): '' }}" >Modifier</a>&nbsp;
+                <a href="{{ (stock.id is defined ) ?  path('imie_stock_supprimer', {'id': stock.id}): '' }}" >Supprimer</a></td>
             {% else %}
             <td colspan="2">
                 <a href="{{ (stock.idproduit is defined  ) ? path('imie_produit_voir', {'id': stock.idproduit}) : ''}}" >Voir produit</a> 
@@ -99,7 +100,6 @@
     {% endfor %}
     </tbody> 
     </table>
-        <p>
-        <a href="{{ path('imie_produit_homepage') }}" class="btn">&nbsp;</a>
+        <p><a href="{{ path('imie_produit_homepage') }}" class="btn">&nbsp; </a>
     </p>
 {% endblock %}

@@ -7,6 +7,7 @@ and open the template in the editor.
     Created on : 25 févr. 2016, 15:18:02
     Author     : Stagiaire
 */
+/*
 @font-face { font-family: 'Amaranth-Regular';
              src: url('/css/webfont/Amaranth-Regular.eot?#iefix') format('embedded-opentype'),
                  url('/css/webfont/Amaranth-Regular.otf') format('opentype'), 
@@ -38,18 +39,15 @@ and open the template in the editor.
                  url('/css/webfont/HelveticaNeueLTStd-BdCn.ttf') format('truetype'), 
                  url('/css/webfont/HelveticaNeueLTStd-BdCn.svg#HelveticaNeueLTStd-BdCn') format('svg'); 
              font-weight: normal; font-style: normal; }
+*/
 
-body{
-    background-image: url("../img/fond.svg");
-    background-size:cover;
-    
-}
+
 
 .hero-unit{
-      position: relative;
+    /*  position: relative;*/
     /*padding: 50px;*/
-    margin-left:10px;  /* 150px;*/
-    margin-top: 10px;
+  /*  margin-left:10px;*/  /* 150px;*/
+  margin-top: 5px;/*  margin-top: 10px;*/
     
     
     background-image: url("../img/soleil.svg");
@@ -70,27 +68,36 @@ body{
 
 .logo{
     
-    background-image: url("../img/logo.svg");
+   /*background-image: url("../img/logo.svg");
     background-repeat: no-repeat;
-    background-size:30%;
+   background-size:30%;
     background-position: 0 45px;
     margin-left: -20px;
     margin-top: ;
     height:100px;
-    z-index: 2;
+    z-index: 2;*/
+    
+    background-image: url("../img/logo.svg");
+    background-repeat: no-repeat;
+    background-size: 20%;
+    background-position: 45px 40px;
+    height: 80px;
 }
 
 .user{
-    position: absolute;
+    /*position: absolute;
     margin-left: 750px;
-    margin-top: 10px;
-    z-index: 1;
+    margin-top: 10px
+    z-index: 1;*/
+    text-align:right;
+    margin:0;
 }
 
 .row{
     display: flex;
     background-color:#F4F2F2;
-     align-content: center;
+    align-content: center;
+    border-radius:15px;
 }
 .well{
     /*background-color: #cdcdcc;*/
@@ -100,8 +107,8 @@ body{
 
 h3{
     margin-left: 10px;
-    font-family:Amaranth-Regular;
-    font-size:2em;
+    /*font-family:Amaranth-Regular;*/
+    /*font-size:2em;*/
 }
 .text{
     box-shadow: 1px -1px 2px  #2f4d5b; 
@@ -117,7 +124,7 @@ h3{
 }
 
 .description{
-    font-family: Amaranth-Regular;
+    /*font-family: Amaranth-Regular;*/
     color: #363636;
     margin-top: 15px;
     margin-left: 10px;
@@ -161,7 +168,7 @@ h3{
 }
 
 .btn,a{
-    font-family: Helvetica;
+    /*font-family: Helvetica;*/
     font-size: 0.8em;
 }
 

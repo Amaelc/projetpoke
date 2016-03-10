@@ -9,6 +9,10 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link href="{{ asset('bundles/produit/css/style.css') }}" rel="stylesheet" />
         <link href="{{ asset('bundles/produit/css/styleBase.css') }}" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open Sans">
+         <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Josefin Slab">
+        <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
         {% block head %}{% endblock %} 
         {% block stylesheets %}{% endblock %}
         <!---->
@@ -19,17 +23,13 @@
             <div id="header" class="hero-unit">
                  <div class="logo"></div>
                 {% block header %}
-                   {# <h1>Projet Poke</h1>#}
                     <p class="user">{{(app.user.username is defined )? 'Bienvenue '~app.user.username : 'non connecté'}}</p>
                 {% endblock %}  
             </div>
             <div class="row">
                 <div id="menu" class="span3">
-                   
-                   <!-- <h3>Menu</h3> -->
                     {% block menu %}
                     <ul class="nav nav-pills nav-stacked">
-                        <!--<li><a href="{{ path('imie_produit_homepage') }}">Accueil</a></li>-->
                         <li><a href="{{ path('imie_produit_homepage') }}">Gestion des stocks</a></li>
                         <li><a href="{{ path('imie_produit_list') }}">Gestion des produits</a></li>
                     </ul>
@@ -39,15 +39,13 @@
                             {% block body %}
                             {% endblock %}
                         </div>
+            <hr>
             </div>
             <hr>
+            <!-- footer ******************************************* -->
             <footer class="footer"><table width="100%"><tr><td width="50%" align="left">&copy; {{ 'now'|date('Y') }}  {{ webmaster }}  </td><td align="right">  <a href="http://www.imie.fr">www.imie.fr</a></td></tr></table></footer>
         </div>
 {% block javascripts %}
-    <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.js') }}"></script>
-    -->
 {% endblock %}
 </body>
 </html>

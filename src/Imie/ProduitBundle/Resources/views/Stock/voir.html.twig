@@ -3,7 +3,7 @@
 {% block title %}
     Voir le détail du stock {{stock.id}} - {{ parent() }}
 {% endblock %}
-{% block titreH1 %}Etat du stock  {{ stock.idproduit.nom }} (id stock={{ stock.id }}) {% endblock %} 
+{% block titreH1 %}Etat du stock  {#{{ stock.idproduit.nom }}#} {% endblock %} 
 {% block menu %}
     {{ parent() }}
     <hr style="margin:0;padding:0;"/>
@@ -18,24 +18,24 @@
     <div class="well" >
         <table width="100%">
             <tr>
-               <td colspan="2">{{ stock.idproduit.idcategorie.nom }}</td>
-               <td colspan="2">{{ stock.idproduit.nom }}</td>
+               <td colspan="2"><span class="libelle">Produit :</span><br/>{{ stock.idproduit.nom }}</td>
+               <td colspan="2"><span class="libelle">Catégorie :</span><br/>{{ stock.idproduit.idcategorie.nom }} </td>
             </tr>
             <tr>
                 <td  colspan="2" ><img src="{{ asset('bundles/produit/images/')}}{{ (stock.idproduit.idimage.nom is defined)? stock.idproduit.idimage.nom :''}}" /></td>
-                <td colspan="2" width="50%">{{ stock.idproduit.description }}</td>
+                <td colspan="2" width="50%" valign="top"><span class="libelle">id = </span>{{ stock.id }}<br/><span class="libelle">Description:</span><br/>{{ stock.idproduit.description }}</td>
             </tr>
             <tr>
-               <td width="25%">Taille :</td><td>{{ (stock.idtaille.taille is defined)?  stock.idtaille.taille:''  }}</td>
-               <td width="25%">Couleur :</td><td>{{ (stock.idcouleur.couleur is defined)?  stock.idcouleur.couleur:''  }}</td>
+                <td width="25%"><span class="libelle">Taille :</span></td><td>{{ (stock.idtaille.taille is defined)?  stock.idtaille.taille:''  }}</td>
+               <td width="25%"><span class="libelle">Couleur :</span></td><td>{{ (stock.idcouleur.couleur is defined)?  stock.idcouleur.couleur:''  }}</td>
             </tr>
         </table>
     </div>
     <div >
         <table class="tableMajStock" width="100%"> 
             <tr>
-               <td  width="25%">Quantité en stock :</td><td width="25%"><input disabled name="qtestock" type="text" value="{{ stock.qtestock }}"  class="inputText" /></td>
-               <td  width="25%">Exemplaires défectueux :</td><td width="25%"><input disabled name="qtedefectueux" type="text" value="{{ stock.qtedefectueux  }}" class="inputText" /></td>
+                <td  width="25%"><span class="libelle">Quantité en stock :</span></td><td width="25%"><input disabled name="qtestock" type="text" value="{{ stock.qtestock }}"  class="inputText" /></td>
+                <td  width="25%"><span class="libelle">Exemplaires défectueux :</span></td><td width="25%"><input disabled name="qtedefectueux" type="text" value="{{ stock.qtedefectueux  }}" class="inputText" /></td>
             </tr>
         </table>
     </div>

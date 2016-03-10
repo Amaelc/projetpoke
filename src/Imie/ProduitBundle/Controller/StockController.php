@@ -305,11 +305,11 @@ class StockController extends Controller
     
     public function supprimerAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('ImieProduitBundle:Stock:');
+        $repo = $em->getRepository('ImieProduitBundle:Stock');
         // On récupère le stock grâce à l'id passé en paramètre
         $stock = $repo->find($id);
         if (!$stock) {
-        throw $this->createNotFoundException('Pas de produit n°'.$id);
+        throw $this->createNotFoundException('Pas de stock n°'.$id);
         }
         // On supprime le produit
         $em->remove ($stock);
